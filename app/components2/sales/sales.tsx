@@ -5,17 +5,17 @@ export default function Sales() {
   return (
     <section className="relative pb-16 pt-6 md:pb-20 md:pt-10">
       <div className="flex flex-col-reverse gap-8 md:flex-row md:items-center">
-        <div className="flex w-full justify-start md:w-1/2 md:flex-shrink-0">
+        <div className="flex w-full justify-center md:w-1/2 md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1.png"
             alt="Сильпо кейс"
-            width={760}
-            height={500}
-            className="h-auto w-full rounded-3xl shadow-sm md:max-w-[760px]"
+            width={500}
+            height={660}
+            className="h-auto w-full rounded-3xl shadow-sm md:max-w-[660px]"
           />
         </div>
 
-        <div className="w-full min-w-0 md:w-1/2 md:max-w-[780px]">
+        <div className="w-full min-w-0 md:w-1/2 md:max-w-[660px]">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-sm text-zinc-500">
               <span>⌂</span>
@@ -25,12 +25,12 @@ export default function Sales() {
               <span className="font-semibold text-zinc-700">Сильпо</span>
             </div>
 
-            <span className="rounded-full bg-zinc-900 px-4 py-1 text-sm font-semibold text-[#f5d58d]">
+            <span className="rounded-full bg-zinc-900 px-4 py-1 text-sm  text-[#f5d58d] font-extrabold font-['Manrope'] ">
               Розничная торговля
             </span>
           </div>
 
-          <h1 className="mb-3 text-5xl font-extrabold leading-[108%] text-zinc-900 md:text-7xl">
+          <h1 className="mb-3 text-5xl font-extrabold leading-[108%] md:text-5xl text-[var(--design-title)]">
             <span className="inline-block rounded-full bg-[#f5d58d] px-4 py-1">
               Рост продаж
             </span>{" "}
@@ -39,13 +39,13 @@ export default function Sales() {
             за 8 месяцев работы
           </h1>
 
-          <p className="mb-5 max-w-[580px] text-sm leading-6 text-zinc-600 md:text-lg md:leading-8">
+          <p className="mb-5 max-w-[580px] text-sm leading-6 text-[var(--design-text)] md:text-lg md:leading-8">
             Как мы помогли региональному ресторану выйти на федеральный уровень —
             с нуля до 40 000 подписчиков и 2,3 млн охвата ежемесячно.
           </p>
 
           <p className="text-xl text-zinc-600 md:text-2xl">
-            Цена <span className="font-bold text-zinc-900">300€ в месяц</span>
+            Цена <span className="font-bold text-[var(--design-text)]">300€ в месяц</span>
           </p>
         </div>
       </div>

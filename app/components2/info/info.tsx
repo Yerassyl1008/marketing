@@ -8,10 +8,10 @@ export default function Info() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
         {[1, 2, 3, 4].map((item) => (
           <article key={item} className="border-l border-zinc-500 pl-3 md:pl-4">
-            <h3 className="mb-3 text-3xl font-bold text-zinc-800 md:text-4xl">
+            <h3 className="mb-3 text-3xl font-bold text-[var(--design-title)] md:text-4xl">
               What is Lorem Ipsum?
             </h3>
-            <p className="text-2xl leading-8 text-zinc-700 md:text-2xl md:leading-7">
+            <p className="text-2xl leading-8 text-[var(--design-title)] md:text-2xl md:leading-7">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy text
               ever since the 1500s, when an unknown printer took a galley of type and

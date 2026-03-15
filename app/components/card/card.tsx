@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function Card() {
   return (
-    <section className="mt-10 rounded-[32px] bg-[#f1f1f1] p-6  shadow-sm md:p-10 md:py-30">
-      <div className="mx-auto max-w-6xl rounded-[28px] bg-[#f7f7f7] p-4 shadow md:p-6">
+    <section className="mt-10 rounded-[32px] bg-[var(--team-surface)] p-6  shadow-sm md:p-10 md:py-30">
+      <div className="mx-auto max-w-6xl rounded-[28px] bg-[var(--team-surface)] p-4 shadow md:p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           <div className="hidden border-r border-dashed border-zinc-300 pr-6 md:block">
             <h3 className="mb-3 text-5xl font-bold leading-tight text-zinc-800">

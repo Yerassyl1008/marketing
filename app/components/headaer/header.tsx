@@ -7,17 +7,18 @@ import Link from "next/link";
 const languages = ["RU", "ENG"];
 const navLinks = [
   { label: "Команда", href: "/team" },
-  { label: "Процесс", href: "/process" },
   { label: "Услуги", href: "/services" },
   { label: "Проекты", href: "/projects" },
   { label: "Связаться", href: "/connect" },
 ];
+const THEME_STORAGE_KEY = "site-theme";
 
 export default function Header() {
   const [selectedLanguage, setSelectedLanguage] = useState("RU");
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isThemeReady, setIsThemeReady] = useState(false);
   const languageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,9 +44,23 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const shouldUseDark = savedTheme ? savedTheme === "dark" : prefersDark;
+    setIsDark(shouldUseDark);
+    setIsThemeReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isThemeReady) return;
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light");
+  }, [isDark, isThemeReady]);
+
   return (
     <>
-      <header className="my-6 flex items-center justify-between rounded-full border border-zinc-300 bg-zinc-100 px-4 py-3 md:px-6 md:py-4">
+      <header className="my-6 flex items-center bg-[var(--header-bg)] justify-between rounded-full  px-4 py-3 md:px-6 md:py-4">
         <h1 className="text-2xl font-semibold md:text-lg">MARKETING LOGO</h1>
 
         <button

@@ -1,9 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const navLinks = ["Команда", "Процесс", "Услуги", "Проекты", "Карта сайта"];
-const contacts = ["Написать нам", "+9 999 99 99 99", "Inst: @Info", "Telegram: @Info", "Viber: @Info"];
-const docs = ["Политика Конфиденциальности", "Условия использования", "Реквизиты компании"];
+const navLinks = [
+  { label: "Команда", href: "/team" },
+  { label: "Процесс", href: "/main-page#work" },
+  { label: "Услуги", href: "/services" },
+  { label: "Проекты", href: "/projects" },
+  { label: "Карта сайта", href: "/connect" },
+];
+
+const contacts = [
+  { label: "Написать нам", href: "/connect" },
+  { label: "+9 999 99 99 99", href: "tel:+99999999999" },
+  { label: "Inst: @Info", href: "https://instagram.com", external: true },
+  { label: "Telegram: @Info", href: "https://t.me", external: true },
+  { label: "Viber: @Info", href: "viber://chat?number=%2B99999999999" },
+];
+
+const docs = [
+  { label: "Политика Конфиденциальности", href: "/privacy" },
+  { label: "Условия использования", href: "#" },
+  { label: "Реквизиты компании", href: "#" },
+];
+
+const linkClass =
+  "group inline-flex items-center text-zinc-300 transition-all duration-300 hover:translate-x-1 hover:text-white";
 
 export default function Footer() {
   return (
@@ -40,7 +61,7 @@ export default function Footer() {
 
           <button
             type="button"
-            className="order-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#9ab5f6] px-5 py-2.5 text-sm font-medium text-zinc-900 shadow md:order-2 md:px-8 md:py-3.5 md:text-base"
+            className="order-3 inline-flex w-fit items-center gap-2 rounded-full bg-[#9ab5f6] px-5 py-2.5 text-sm font-medium text-zinc-900 shadow transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#89a9f5] md:order-2 md:px-8 md:py-3.5 md:text-base"
           >
             <span>→</span>
             Связаться с нами
@@ -48,7 +69,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative left-1/2 mt-4 w-screen -translate-x-1/2 bg-[#1d1d1f] text-zinc-200">
+      <div className="mt-4 -mx-3 bg-[#1d1d1f] text-zinc-200 md:-mx-8">
         <div className="mx-auto max-w-[1900px] px-4 py-6 md:px-12 md:py-10">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[2.2fr_1fr_1fr_1fr] md:gap-10">
           <div>
@@ -68,9 +89,11 @@ export default function Footer() {
             <p className="mb-3 text-sm text-zinc-500 md:text-lg">Навигация</p>
             <ul className="space-y-2 text-sm md:text-lg">
               {navLinks.map((item) => (
-                <li key={item}>
-                  <Link href="#" className="hover:text-white">
-                    {item}
+                <li key={item.label}>
+                  <Link href={item.href} className={linkClass}>
+                    <span className="border-b border-transparent transition-colors duration-300 group-hover:border-white/70">
+                      {item.label}
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -81,7 +104,18 @@ export default function Footer() {
             <p className="mb-3 text-sm text-zinc-500 md:text-lg">Контакты</p>
             <ul className="space-y-2 text-sm md:text-lg">
               {contacts.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className={linkClass}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer noopener" : undefined}
+                  >
+                    <span className="border-b border-transparent transition-colors duration-300 group-hover:border-white/70">
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -90,7 +124,13 @@ export default function Footer() {
             <p className="mb-3 text-sm text-zinc-500 md:text-lg">Документы</p>
             <ul className="space-y-2 text-sm md:text-lg">
               {docs.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item.label}>
+                  <Link href={item.href} className={linkClass}>
+                    <span className="border-b border-transparent transition-colors duration-300 group-hover:border-white/70">
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>

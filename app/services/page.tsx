@@ -6,14 +6,20 @@ import Card from "../components/card/card";
 import Faq from "../components2/faq/faq";
 export default function ServicesPage() {
   return (
+    <>  
     <main className="mx-auto flex w-full max-w-[1900px] flex-col gap-16 px-6">
-    <Header />
-    <Smm />
+    <section className="rounded-[36px] bg-[var(--team-surface)] px-3 pb-8 pt-2 shadow-sm md:px-6 md:pb-10 md:pt-4">
+      <Header />
+      <Smm />
+    </section>
     <Services />
     <Card />
     <Faq />
-    <Footer />
     </main>
+    <Footer />
+
+    </>
+
   );
 }
 

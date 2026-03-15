@@ -1,25 +1,73 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+const featureItems = [
+  {
+    badge: "badge",
+    title: "Lorem Ipsum",
+    description: "Is simply dummy text of the printing",
+  },
+  {
+    badge: "badge",
+    title: "Lorem Ipsum",
+    description: "Is simply dummy text of the printing",
+  },
+  {
+    badge: "badge",
+    title: "Lorem Ipsum",
+    description: "Is simply dummy text of the printing",
+  },
+  {
+    badge: "badge",
+    title: "Lorem Ipsum",
+    description: "Is simply dummy text of the printing",
+  },
+];
+
 export default function Features() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setIsDarkTheme(root.classList.contains("dark"));
+
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="mt-10  p-4 md:p-6">
+    <section className="mt-10 p-4 [--card-radius:1.5rem] [--card-pad:1rem] [--title-size:2rem] [--title-lh:2.4rem] [--text-size:1.25rem] [--text-lh:2rem] [--icon-size:1.75rem] md:p-6 md:[--card-pad:1.25rem] md:[--title-size:1.75rem] md:[--title-lh:2.25rem] md:[--text-size:1rem] md:[--text-lh:1.75rem] md:[--icon-size:2rem]">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
-        {[1, 2, 3, 4].map((item) => (
+        {featureItems.map((item, index) => (
           <article
-            key={item}
-            className="relative rounded-3xl bg-[#f6f6f6] p-4 shadow-[0_8px_20px_rgba(0,0,0,0.08)] md:p-5"
+            key={`${item.title}-${index}`}
+            className="relative rounded-[var(--card-radius)] bg-[var(--background)] p-[var(--card-pad)] shadow-[0_8px_20px_rgba(0,0,0,0.08)] border border-[var(--design-text)]"
           >
-            <span className="absolute right-3 top-0 -translate-y-1/2 rounded-full bg-zinc-900 px-3 py-1 text-sm font-semibold text-[#f5d58d]">
-              badge
+            <span className="absolute right-3 top-0 -translate-y-1/2 rounded-full bg-zinc-900 px-3 py-1 text-sm font-semibold text-[#f5d58d] dark:bg-zinc-100 dark:text-zinc-900 text-[var(--design-accent)] ">
+              {item.badge}
             </span>
 
-            <div className="mb-4 h-7 w-7 rounded-full border-2 border-zinc-700">
-              <div className="ml-3 mt-[-2px] h-3 w-3 rounded-full border-2 border-zinc-700 bg-[#f6f6f6]" />
+            <div className="mb-4">
+              <Image
+                src={isDarkTheme ? "/svg/graph-dark.svg" : "/svg/graph.svg"}
+                alt="Feature icon"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
             </div>
 
-            <h3 className="mb-2 text-4xl font-bold leading-10 text-zinc-800 md:text-3xl md:leading-9">
-              Lorem Ipsum
+            <h3 className=" text-[var(--design-title)] font-bold leading-[var(--title-lh)] text-2xl font-['Manrope']">
+              {item.title}
             </h3>
-            <p className="text-2xl leading-8 text-zinc-800 md:text-xl md:leading-7">
-              Is simply dummy text of the printing
+            <p className="text-[var(--design-title)] leading-[var(--text-lh)] ">
+              {item.description}
             </p>
           </article>
         ))}

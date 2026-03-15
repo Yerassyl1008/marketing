@@ -5,39 +5,39 @@ export default function Design() {
   return (
     <section className="relative pb-16 pt-6 md:pb-20 md:mx-10">
       <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-10">
-        <div className="flex w-full justify-start md:w-[54%] md:flex-shrink-0">
+        <div className="flex w-full justify-start md:w-[34%] md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1 (2) 1.png"
             alt="hero"
-            width={760}
-            height={560}
-            className="h-auto w-full max-w-[520px] md:max-w-[680px]"
+            width={400}
+            height={400}
+            className="h-auto w-full max-w-[300px] md:max-w-[400px]"
           />
         </div>
 
         <div className="w-full min-w-0 md:w-[46%] md:max-w-[800px]">
-          <div className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
+          <div className="mb-4 flex items-center gap-2 text-sm text-[var(--design-muted)]">
             <span>⌂</span>
             <span>›</span>
             <span>Команда</span>
             <span>›</span>
-            <span className="font-semibold text-zinc-700">Анастасия Яковлева</span>
+            <span className="font-semibold text-[var(--design-text)]">Анастасия Яковлева</span>
           </div>
 
-          <h2 className="mb-3 text-5xl font-extrabold leading-[105%] text-zinc-900 md:text-6xl">
-            <span className="inline-block rounded-full bg-[#f5d58d] px-4 py-1">
+          <h2 className="mb-3 text-5xl font-extrabold leading-[105%] text-[var(--design-title)] md:text-6xl">
+            <span className="inline-block rounded-full bg-[var(--design-accent)] px-4 py-1">
               SMM-Дизайнер
             </span>
             <br />
             &amp; Контент-мейкер
           </h2>
 
-          <p className="mb-5 max-w-[520px] text-sm leading-6 text-zinc-600 md:text-base">
+          <p className="mb-5 max-w-[520px] text-sm leading-6 text-[var(--design-text)] md:text-base">
             Создаёт визуальный голос бренда — от стратегии до пикселя.
             Превращает идеи в контент, который запоминают и которым делятся.
           </p>
 
-          <button className="flex items-center gap-2 rounded-full bg-[#acc2fd] px-6 py-3 text-base transition-colors duration-300 hover:bg-[#9fb8fc]">
+          <button className="flex items-center gap-2 rounded-full bg-[var(--design-btn)] px-6 py-3 text-base transition-colors duration-300 hover:bg-[var(--design-btn-hover)]">
             <Image
               src="/svg/solar_calculator-broken.svg"
               alt="calculator"
