@@ -61,7 +61,7 @@ export default function Services() {
 
   return (
     <section className="mt-8  px-3 py-8 md:px-8 md:py-10">
-      <h2 className="mb-10 text-center text-3xl font-bold text-zinc-800 md:mb-16 md:text-4xl">
+      <h2 className="mb-10 text-center text-3xl font-bold text-[var(--services-title)] md:mb-16 md:text-4xl">
         Услуги
       </h2>
 
@@ -70,7 +70,7 @@ export default function Services() {
           const isOpenMobile = openedSection === section.id;
 
           return (
-            <div key={section.id} className="rounded-2xl bg-[#F1F0EE] p-2 md:p-3">
+            <div key={section.id} className="rounded-2xl bg-[var(--services-bg)] p-2 md:p-3 ">
               <button
                 type="button"
                 onClick={() =>
@@ -79,7 +79,7 @@ export default function Services() {
                 className="flex w-full items-center justify-between rounded-xl px-2 py-1 text-left md:pointer-events-none md:justify-center"
                 aria-expanded={isOpenMobile}
               >
-                <span className="text-1xl font-semibold text-zinc-800 md:text-2xl mb-2">
+                <span className="text-1xl font-semibold text-[var(--services-title)] md:text-2xl mb-2">
                   {section.title}
                 </span>
                 <span className="text-xl text-zinc-500 md:hidden">
@@ -88,7 +88,7 @@ export default function Services() {
               </button>
 
               <div
-                className={`mt-2 grid grid-cols-2 gap-2 md:grid md:grid-cols-3 md:gap-3 ${
+                className={`mt-2 grid grid-cols-2 gap-2  pb-6 md:grid md:grid-cols-3 md:gap-3 ${
                   isOpenMobile ? "block" : "hidden"
                 } md:block`}
               >
@@ -98,10 +98,10 @@ export default function Services() {
                   return (
                     <div
                       key={item}
-                      className={`flex min-h-16 items-start gap-2 rounded-full px-3 py-4 md:min-h-16 md:items-center ${
+                      className={`flex min-h-[112px] items-start gap-2 rounded-2xl px-3 py-4 md:min-h-16 md:items-center md:rounded-full ${
                         isActive
-                          ? "bg-[#9ab5f6] text-zinc-800"
-                          : "bg-zinc-100 text-zinc-700"
+                          ? "bg-[#9ab5f6] text-[var(--services-title)]"
+                          : "bg-[var(--services-text-bg)]  text-[var(--services-title)]"
                       }`}
                     >
                       <span className="mt-1 h-3 w-3 flex-shrink-0 rounded-full border border-zinc-400 md:mt-0" />

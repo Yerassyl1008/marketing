@@ -1,7 +1,7 @@
 export default function Info() {
   return (
     <section className="mt-10 p-4 md:p-6">
-      <h2 className="mb-8 text-center text-6xl font-bold text-zinc-800 md:mb-16 md:text-5xl">
+      <h2 className="mb-8 text-center text-6xl font-bold text-[var(--design-title)] md:mb-16 md:text-5xl">
         Lorem Ipsum
       </h2>
 

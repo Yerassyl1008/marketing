@@ -2,24 +2,48 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
-const languages = ["RU", "ENG"];
-const navLinks = [
-  { label: "Команда", href: "/team" },
-  { label: "Услуги", href: "/services" },
-  { label: "Проекты", href: "/projects" },
-  { label: "Связаться", href: "/connect" },
-];
+const languages = ["ru", "en", "fr", "ar", "de"] as const;
+// const navLinks = [
+//   { label: "Команда", href: "/team" },
+//   { label: "Услуги", href: "/services" },
+//   { label: "Проекты", href: "/projects" },
+//   { label: "Связаться", href: "/connect" },
+// ];
 const THEME_STORAGE_KEY = "site-theme";
 
 export default function Header() {
-  const [selectedLanguage, setSelectedLanguage] = useState("RU");
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isThemeReady, setIsThemeReady] = useState(false);
   const languageRef = useRef<HTMLDivElement>(null);
+
+  const t = useTranslations('header');
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const navLinks = [
+    { label: t('team'), href: "/team" },
+    { label: t('services'), href: "/services" },
+    { label: t('projects'), href: "/projects" },
+    { label: t('connect'), href: "/connect" },
+  ];
+
+  function handleLocaleChange(nextLocale: (typeof languages)[number]) {
+    router.replace(pathname, { locale: nextLocale });
+    setIsLanguageOpen(false);
+  }
+
+  function switchToNextLocale() {
+    const currentIndex = languages.indexOf(locale as (typeof languages)[number]);
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % languages.length;
+    handleLocaleChange(languages[nextIndex]);
+  }
+
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -60,19 +84,21 @@ export default function Header() {
 
   return (
     <>
-      <header className="my-6 flex items-center bg-[var(--header-bg)] justify-between rounded-full  px-4 py-3 md:px-6 md:py-4">
-        <h1 className="text-2xl font-semibold md:text-lg">MARKETING LOGO</h1>
+      <header className="my-4 flex items-center justify-between rounded-full bg-[var(--header-bg)] px-3 py-2.5 sm:my-6 sm:px-4 sm:py-3 lg:px-6 lg:py-4">
+          <Link href="/main-page">
+        <h1 className="text-xl leading-tight font-semibold sm:text-2xl lg:text-lg">MARKETING LOGO</h1>
+        </Link>
 
         <button
           type="button"
-          className="inline-flex text-3xl md:hidden"
+          className="inline-flex text-2xl sm:text-3xl lg:hidden"
           aria-label="Открыть меню"
           onClick={() => setIsMobileMenuOpen(true)}
         >
           ☰
         </button>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <nav>
             <ul className="flex items-center gap-6 text-sm">
               {navLinks.map((link) => (
@@ -90,25 +116,22 @@ export default function Header() {
                 onClick={() => setIsLanguageOpen((prev) => !prev)}
                 className="flex items-center justify-center gap-2 rounded-full px-2 py-1"
               >
-                <span>{selectedLanguage}</span>
+                <span>{locale.toUpperCase()}</span>
                 <Image src="/svg/chevron-right.svg" alt="arrow-down" width={10} height={10} />
               </button>
 
               {isLanguageOpen && (
                 <div className="absolute left-0 top-12 z-20 w-full rounded-3xl border border-zinc-300 bg-zinc-100 p-1 shadow-sm">
                   {languages
-                    .filter((lang) => lang !== selectedLanguage)
+                    .filter((lang) => lang !== locale)
                     .map((lang) => (
                       <button
                         key={lang}
                         type="button"
-                        onClick={() => {
-                          setSelectedLanguage(lang);
-                          setIsLanguageOpen(false);
-                        }}
+                        onClick={() => handleLocaleChange(lang)}
                         className="flex w-full items-center justify-center rounded-full px-2 py-1 text-zinc-600 transition hover:bg-zinc-200"
                       >
-                        {lang}
+                        {lang.toUpperCase()}
                       </button>
                     ))}
                 </div>
@@ -139,7 +162,7 @@ export default function Header() {
       </header>
 
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#f4f4f4]/95 px-6 pb-6 pt-8 backdrop-blur-sm md:hidden">
+        <div className="fixed inset-0 z-50 bg-[#f4f4f4]/95 px-4 pb-6 pt-8 backdrop-blur-sm sm:px-6 lg:hidden">
           <button
             type="button"
             aria-label="Закрыть меню"
@@ -192,8 +215,8 @@ export default function Header() {
               </span>
             </button>
 
-            <button type="button" className="flex items-center gap-2 text-2xl">
-              {selectedLanguage}
+            <button type="button" className="flex items-center gap-2 text-2xl" onClick={switchToNextLocale}>
+              {locale.toUpperCase()}
               <Image src="/svg/chevron-right.svg" alt="arrow" width={12} height={12} />
             </button>
 

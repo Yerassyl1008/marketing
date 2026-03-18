@@ -28,8 +28,8 @@ const linkClass =
 
 export default function Footer() {
   return (
-    <footer className="mt-10 w-full rounded-t-[32px] bg-[#E5E5E5] px-3 pb-0 pt-3 md:px-8 md:pb-0 md:pt-8">
-      <div className="rounded-[28px] bg-[#E5E5E5] px-4 py-6 md:px-12 md:py-10">
+    <footer className="mt-10 w-full rounded-t-[32px] bg-[var(--footer-bg-top)] px-3 pb-0 pt-3 md:px-8 md:pb-0 md:pt-8">
+      <div className="rounded-[28px]  px-4 py-6 md:px-12 md:py-10">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3 md:max-w-[620px]">
             <span className="text-5xl text-zinc-300">“</span>
@@ -42,7 +42,7 @@ export default function Footer() {
           </div>
 
           <div className="order-2 flex items-center md:order-3">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((item, idx) => (
+            {[1, 2, 3, 4].map((item, idx) => (
               <div
                 key={item}
                 className={`relative h-10 w-10 overflow-hidden rounded-full border-2 border-[#f5f5f5] md:h-14 md:w-14 ${

@@ -40,7 +40,7 @@ export default function Faq() {
 
   return (
     <section className="mt-10 p-2 md:p-6">
-      <h2 className="mb-6 text-center text-5xl font-bold text-zinc-800 md:mb-10 md:text-6xl">
+      <h2 className="mb-6 text-center text-5xl font-bold text-(var(--foreground)) md:mb-10 md:text-6xl">
         FAQ
       </h2>
 
@@ -56,8 +56,8 @@ export default function Faq() {
                 className="flex w-full items-center gap-3 py-4 text-left md:py-8"
                 aria-expanded={isOpen}
               >
-                <span className="w-4 text-xl text-zinc-700">{isOpen ? "−" : "+"}</span>
-                <span className="text-xl font-medium text-zinc-800 md:text-4xl">
+                <span className="w-4 text-xl text-(var(--foreground))">{isOpen ? "−" : "+"}</span>
+                <span className="text-xl font-medium text-(var(--foreground)) md:text-3xl">
                   {item.question}
                 </span>
               </button>
@@ -68,7 +68,7 @@ export default function Faq() {
                 }`}
               >
                 <div className="overflow-hidden pl-7 pr-1">
-                  <p className="max-w-[1200px] text-base leading-7 text-zinc-700 md:text-3xl md:leading-8">
+                  <p className="max-w-[1200px] text-base font-medium leading-7 text-(var(--foreground)) md:text-lg md:leading-8">
                     {item.answer}
                   </p>
                 </div>

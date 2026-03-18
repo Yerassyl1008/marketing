@@ -1,0 +1,14 @@
+{
+  "header": {
+    "connect": "Contact",
+    "projects": "Projects",
+    "services": "Services",
+    "team": "Team"
+  },
+  "hero": {
+    "button": "Contact us",
+    "span": "299 €/month",
+    "text": "We take this task completely upon ourselves",
+    "title": "Comprehensive promotion of your business from"
+  }
+}

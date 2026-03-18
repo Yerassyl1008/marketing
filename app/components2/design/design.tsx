@@ -5,13 +5,13 @@ export default function Design() {
   return (
     <section className="relative pb-16 pt-6 md:pb-20 md:mx-10">
       <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-10">
-        <div className="flex w-full justify-start md:w-[34%] md:flex-shrink-0">
+        <div className="flex w-full justify-start md:w-[40%] md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1 (2) 1.png"
             alt="hero"
-            width={400}
-            height={400}
-            className="h-auto w-full max-w-[300px] md:max-w-[400px]"
+            width={600}
+            height={600}
+            className="h-auto w-full max-w-[400px] md:max-w-[600px]"
           />
         </div>
 

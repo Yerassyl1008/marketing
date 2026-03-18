@@ -1,0 +1,14 @@
+{
+  "header": {
+    "connect": "Contacter",
+    "projects": "Projets",
+    "services": "Services",
+    "team": "Équipe"
+  },
+  "hero": {
+    "button": "Nous contacter",
+    "span": "299 €/mois",
+    "text": "Nous prenons entièrement cette tâche en charge.",
+    "title": "Promotion complète de votre entreprise à partir de"
+  }
+}

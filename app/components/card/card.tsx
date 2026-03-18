@@ -1,32 +1,52 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Card() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setIsDarkTheme(root.classList.contains("dark"));
+
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="mt-10 rounded-[32px] bg-[var(--team-surface)] p-6  shadow-sm md:p-10 md:py-30">
-      <div className="mx-auto max-w-6xl rounded-[28px] bg-[var(--team-surface)] p-4 shadow md:p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          <div className="hidden border-r border-dashed border-zinc-300 pr-6 md:block">
-            <h3 className="mb-3 text-5xl font-bold leading-tight text-zinc-800">
-              <span className="rounded-full bg-[#f5cf7d]">
+    <section className="mt-10 rounded-[32px] bg-[var(--team-surface)] p-3 shadow-sm sm:p-6 lg:p-10 lg:py-30">
+      <div className="mx-auto max-w-6xl rounded-[28px] bg-[var(--team-surface)] p-3 sm:p-4 lg:p-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8 bg-[var(--team-surface)]">
+          <div className="hidden border-r border-dashed border-zinc-300 pr-6 lg:block">
+            <h3 className="mb-3 text-5xl font-bold leading-tight text-[var(--foreground)]">
+              <span className="rounded-full bg-[var(--hero-span)]">
                 Не знаете
-              </span>
+              </span >
               <br />с чего начать?
             </h3>
-            <p className="max-w-md text-lg text-zinc-500">
+            <p className="max-w-md text-lg font-medium leading-7 text-[var(--foreground)]">
               Если вы еще не знаете, кого вам хотелось бы нанять в команду -
               оставьте заявку на общение с маркетологом.
-              <span className="font-semibold text-zinc-700"> Это бесплатно.</span>
-            </p>
+              <span className="font-semibold text-[var(--foreground)]"> Это бесплатно.</span>            </p>
 
             <div className="mt-8 rounded-2xl  p-4">
               <div className="mb-4 grid h-[210px] place-items-center rounded-xl">
                 <Image
-                  src="/img/Frame189(1)1.png"
+                  src={
+                    isDarkTheme
+                      ? "/img/Frame%20189%20(1)%201.jpg"
+                      : "/img/Frame189(1)1.png"
+                  }
                   alt="Иллюстрация услуг"
                   width={380}
                   height={380}
-                  className="mb-6"
+                  className={isDarkTheme ? "mb-6 opacity-[0.28]" : "mb-6"}
                 />
               </div>
 
@@ -53,36 +73,36 @@ export default function Card() {
             </div>
           </div>
 
-          <form className="rounded-3xl bg-[#f7f7f7] p-1 md:p-0">
-            <h3 className="mb-5 text-5xl font-bold text-zinc-800">
+          <form className="rounded-3xl p-1 lg:p-0">
+            <h3 className="mb-4 text-4xl leading-tight font-bold text-(var(--foreground)) sm:mb-5 sm:text-5xl">
               Свяжитесь с нами
             </h3>
 
-            <label className="mb-2 block text-lg text-zinc-600" htmlFor="name">
+            <label className="mb-2 block text-base text-zinc-600 sm:text-lg" htmlFor="name">
               Ваше имя:
             </label>
             <input
               id="name"
               type="text"
               defaultValue="Алекс"
-              className="mb-4 w-full rounded-2xl border border-zinc-500 bg-transparent px-4 py-2.5 text-lg outline-none transition focus:border-zinc-700"
+              className="mb-4 w-full rounded-2xl border border-zinc-500 bg-[var(--card-input-bg)] px-3 py-2.5 text-base outline-none transition focus:border-zinc-700 sm:px-4 sm:text-lg"
             />
 
-            <label className="mb-2 block text-lg text-zinc-600" htmlFor="email">
+            <label className="mb-2 block text-base text-zinc-600 sm:text-lg" htmlFor="email">
               Электронная почта:
             </label>
             <input
               id="email"
               type="email"
               placeholder="example@gmail.com"
-              className="mb-4 w-full rounded-2xl border border-zinc-300 bg-transparent px-4 py-2.5 text-lg outline-none transition focus:border-zinc-500"
+              className="mb-4 w-full rounded-2xl border border-zinc-300 bg-[var(--card-input-bg)] px-3 py-2.5 text-base outline-none transition focus:border-zinc-500 sm:px-4 sm:text-lg"
             />
 
-            <p className="mb-2 text-lg text-zinc-600">Способ связи</p>
-            <div className="mb-4 grid grid-cols-2 gap-2">
+            <p className="mb-2 text-base text-zinc-600 sm:text-lg">Способ связи</p>
+            <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               <button
                 type="button"
-                className="flex items-center justify-between rounded-2xl border border-zinc-500 px-3 py-2.5 text-base text-zinc-800"
+                className="flex items-center justify-between rounded-2xl border border-zinc-500 px-3 py-2.5 text-sm text-zinc-800 sm:text-base"
               >
                 <span className="flex items-center gap-2">
                   <Image
@@ -97,7 +117,7 @@ export default function Card() {
               </button>
               <button
                 type="button"
-                className="flex items-center justify-between rounded-2xl border border-zinc-300 px-3 py-2.5 text-base text-zinc-500"
+                className="flex items-center justify-between rounded-2xl border border-zinc-300 px-3 py-2.5 text-sm text-zinc-500 sm:text-base"
               >
                 <span className="flex items-center gap-2">
                   <Image src="/svg/Viber_black.svg" alt="Viber" width={20} height={20} />
@@ -107,11 +127,11 @@ export default function Card() {
               </button>
             </div>
 
-            <div className="mb-1 flex items-center justify-between gap-3">
-              <label className="block text-lg text-zinc-600" htmlFor="tg">
+            <div className="mb-1 flex flex-col items-start justify-between gap-1 sm:flex-row sm:items-center sm:gap-3">
+              <label className="block text-base text-zinc-600 sm:text-lg" htmlFor="tg">
                 Ваш Telegram:
               </label>
-              <span className="text-sm text-[#ff6f6f]">
+              <span className="text-xs leading-tight text-[#ff6f6f] sm:text-sm">
                 Пожалуйста заполните поле
               </span>
             </div>
@@ -119,19 +139,19 @@ export default function Card() {
               id="tg"
               type="text"
               placeholder="@username или номер телефона"
-              className="mb-8 w-full rounded-2xl border border-[#ff8f8f] bg-transparent px-4 py-2.5 text-lg text-zinc-500 outline-none transition focus:border-[#ff6f6f]"
+              className="mb-8 w-full rounded-2xl border border-[#ff8f8f] bg-[var(--card-input-bg)] px-3 py-2.5 text-base text-zinc-500 outline-none transition focus:border-[#ff6f6f] sm:px-4 sm:text-lg"
             />
 
-            <div className="flex items-end justify-between gap-3 ">
+            <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-end">
               <button
                 type="submit"
-                className="inline-flex items-center gap-3 rounded-full border-b-8 border-zinc-900 bg-[#a9bffd] px-6 py-3 text-2xl font-medium text-zinc-900 transition-colors hover:bg-[#98b1fb]"
+                className="inline-flex w-full items-center justify-center gap-3 rounded-full border-b-8 border-zinc-900 bg-[#a9bffd] px-4 py-3 text-xl font-medium text-zinc-900 transition-colors hover:bg-[#98b1fb] sm:w-auto sm:justify-start sm:px-6 sm:text-2xl"
               >
-                <span className="text-2xl">→</span>
+                <span className="text-xl sm:text-2xl">→</span>
                 Получить консультацию
               </button>
 
-              <div className="flex items-center text-center justify-center gap-2 ">
+              <div className="flex items-center justify-center gap-2 self-end text-center sm:self-auto">
                 <Link href="#" aria-label="Telegram">
                   <Image
                     src="/svg/Telegram_black.svg"

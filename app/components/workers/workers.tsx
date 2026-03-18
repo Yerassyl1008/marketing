@@ -1,38 +1,103 @@
+"use client";
+
+import Image from "next/image";
+import { useMemo, useState } from "react";
+
 const workers = [
-  { name: "Анастасия Яковлева", role: "Дизайнер", experience: "3 года опыта" },
-  { name: "Алексей Петров", role: "Таргетолог", experience: "5 лет опыта" },
-  { name: "Мария Соколова", role: "SMM-специалист", experience: "4 года опыта" },
-  { name: "Арина Кузнецова", role: "SEO-специалист", experience: "7 лет опыта" },
-  { name: "Вячеслав Макушев", role: "Таргетолог", experience: "4 года опыта" },
+  {
+    name: "Анастасия Яковлева",
+    role: "Дизайнер",
+    experience: "3 года опыта",
+    image: "/img/workers/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1.jpg",
+  },
+  {
+    name: "Алексей Петров",
+    role: "Таргетолог",
+    experience: "5 лет опыта",
+    image: "/img/workers/man-with-curly-hair-smiles-isolated 1.jpg",
+  },
+  {
+    name: "Мария Соколова",
+    role: "SMM-специалист",
+    experience: "4 года опыта",
+    image: "/img/workers/beautifuan-woman-with-curly-hair-smiles-isolated 1.jpg",
+  },
+  {
+    name: "Арина Кузнецова",
+    role: "SEO-специалист",
+    experience: "7 лет опыта",
+    image: "/img/workers/dawda.jpg",
+  },
+  {
+    name: "Вячеслав Макушев",
+    role: "Таргетолог",
+    experience: "4 года опыта",
+    image: "/img/workers/beautifull-caucasiany-hair-smiles-isolated 1.jpg",
+  },
+  {
+    name: "Иван Тихонов",
+    role: "Менеджер",
+    experience: "6 лет опыта",
+    image: "/img/workers/man-with-curly-hair-smiles-isolated 1.jpg",
+  },
+  {
+    name: "Елизавета Орлова",
+    role: "Контент-менеджер",
+    experience: "5 лет опыта",
+    image: "/img/workers/beautifuan-woman-with-curly-hair-smiles-isolated 1.jpg",
+  },
 ];
 
 export default function Workers() {
+  const [desktopPage, setDesktopPage] = useState(0);
+  const [mobileVisibleCount, setMobileVisibleCount] = useState(6);
+
+  const DESKTOP_PAGE_SIZE = 5;
+  const desktopPageCount = Math.ceil(workers.length / DESKTOP_PAGE_SIZE);
+
+  const desktopWorkers = useMemo(() => {
+    const start = desktopPage * DESKTOP_PAGE_SIZE;
+    return Array.from({ length: DESKTOP_PAGE_SIZE }, (_, index) => {
+      const workerIndex = (start + index) % workers.length;
+      return workers[workerIndex];
+    });
+  }, [desktopPage]);
+
+  const mobileWorkers = workers.slice(0, mobileVisibleCount);
+  const hasMoreMobileWorkers = mobileVisibleCount < workers.length;
+
   return (
-    <section className="mt-8 px-8 py-10">
-      <h2 className="mb-8 text-center text-5xl font-bold text-zinc-800">
+    <section className="mt-8 px-3 py-8 md:px-8 md:py-10">
+      <h2 className="mb-8 text-center text-4xl font-extrabold text-[var(--workers-title)] md:mb-12 md:text-5xl">
         Специалисты
       </h2>
 
-      <div className="relative">
-        <div className="grid grid-cols-5 gap-4">
-          {workers.map((worker, index) => (
+      <div className="relative hidden lg:block">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
+          {desktopWorkers.map((worker) => (
             <article
               key={worker.name}
-              className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm"
+              className="overflow-hidden rounded-2xl bg-[var(--workers-bg)] shadow-sm"
             >
               <div className="relative h-40 bg-zinc-200">
+                <Image
+                  src={worker.image}
+                  alt={worker.name}
+                  fill
+                  className="object-cover"
+                />
                 <span className="absolute right-3 top-3 rounded-full bg-zinc-900 px-3 py-1 text-xs font-semibold text-white">
                   {worker.experience}
                 </span>
               </div>
 
-              <div className="p-4">
-                <p className="text-sm text-zinc-500">{worker.name}</p>
-                <div className="mt-1 flex items-center justify-between gap-2">
-                  <p className="text-3xl font-semibold text-zinc-800">
-                    {worker.role}
-                  </p>
-                  {index === 0 && (
+              <div className="flex min-h-26 flex-col bg-[var(--workers-bg)] p-4 pt-5">
+                <div className="mt-auto">
+                  <p className="text-sm leading-tight text-zinc-500">{worker.name}</p>
+                  <div className="mt-1.5 flex items-end justify-between gap-2">
+                    <p className="text-3xl leading-8 font-semibold text-[var(--workers-text)]">
+                      {worker.role}
+                    </p>
                     <button
                       type="button"
                       className="grid h-9 w-9 place-items-center rounded-full bg-[#acc2fd] text-lg text-zinc-800"
@@ -40,7 +105,7 @@ export default function Workers() {
                     >
                       ↗
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
             </article>
@@ -50,15 +115,65 @@ export default function Workers() {
         <button
           type="button"
           aria-label="Следующий слайд"
+          onClick={() =>
+            setDesktopPage((prev) => (prev + 1) % Math.max(desktopPageCount, 1))
+          }
           className="absolute -right-4 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-zinc-200 bg-white text-xl text-zinc-700 shadow"
         >
           →
         </button>
       </div>
 
-      <div className="mt-6 flex items-center justify-center gap-2">
-        <span className="h-2.5 w-6 rounded-full bg-zinc-900" />
-        <span className="h-2.5 w-2.5 rounded-full bg-zinc-400" />
+      <div className="grid grid-cols-2 gap-3 lg:hidden">
+        {mobileWorkers.map((worker) => (
+          <article
+            key={worker.name}
+            className="overflow-hidden rounded-2xl border border-zinc-200 bg-[var(--workers-bg)] shadow-sm"
+          >
+            <div className="relative h-28 bg-zinc-200">
+              <Image src={worker.image} alt={worker.name} fill className="object-cover object-top" />
+              <span className="absolute right-2 top-2 rounded-full bg-zinc-900 px-2 py-1 text-[10px] font-semibold text-white">
+                {worker.experience}
+              </span>
+            </div>
+            <div className="flex min-h-26 flex-col bg-[var(--workers-bg)] p-3 pt-4">
+              <div className="mt-auto">
+                <p className="text-sm leading-tight text-zinc-500">{worker.name}</p>
+                <div className="mt-1.5 flex items-end justify-between gap-2">
+                  <p className="text-xl font-semibold text-[var(--workers-text)]">{worker.role}</p>
+                  <button
+                    type="button"
+                    className="grid h-8 w-8 place-items-center rounded-full bg-[#acc2fd] text-base text-zinc-800"
+                    aria-label="Открыть профиль"
+                  >
+                    ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {hasMoreMobileWorkers && (
+        <div className="mt-4 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileVisibleCount((prev) => Math.min(prev + 2, workers.length))}
+            className="rounded-full bg-[#f5d58d] px-5 py-3 text-sm font-semibold text-zinc-800 shadow"
+          >
+            Показать ещё
+          </button>
+        </div>
+      )}
+
+      <div className="mt-6 hidden items-center justify-center gap-2 lg:flex">
+        {Array.from({ length: desktopPageCount }).map((_, index) => (
+          <span
+            key={index}
+            className={index === desktopPage ? "h-2.5 w-6 rounded-full bg-zinc-900" : "h-2.5 w-2.5 rounded-full bg-zinc-400"}
+          />
+        ))}
       </div>
     </section>
   );
