@@ -4,8 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 export default function Card() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contactType, setContactType] = useState<"telegram" | "whatsapp">("telegram");
+  const [contact, setContact] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
 
   useEffect(() => {
     const root = document.documentElement;
@@ -18,6 +28,52 @@ export default function Card() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitError("");
+    setSubmitSuccess("");
+
+    if (!name.trim() || !email.trim() || !contact.trim()) {
+      setSubmitError("Заполните имя, email и способ связи.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/public/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          contact_type: contactType,
+          contact: contact.trim(),
+          message: message.trim() || null,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => null);
+        const detail =
+          typeof errorPayload?.detail === "string"
+            ? errorPayload.detail
+            : "Не удалось отправить заявку.";
+        throw new Error(detail);
+      }
+
+      setSubmitSuccess("Заявка отправлена. Она уже в админке.");
+      setName("");
+      setEmail("");
+      setContact("");
+      setMessage("");
+      setContactType("telegram");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Ошибка отправки формы.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="mt-10 rounded-[32px] bg-[var(--team-surface)] p-3 shadow-sm sm:p-6 lg:p-10 lg:py-30">
@@ -73,8 +129,8 @@ export default function Card() {
             </div>
           </div>
 
-          <form className="rounded-3xl p-1 lg:p-0">
-            <h3 className="mb-4 text-4xl leading-tight font-bold text-(var(--foreground)) sm:mb-5 sm:text-5xl">
+          <form className="rounded-3xl p-1 lg:p-0" onSubmit={handleSubmit}>
+            <h3 className="mb-4 text-4xl leading-tight font-bold text-[var(--foreground)] sm:mb-5 sm:text-5xl">
               Свяжитесь с нами
             </h3>
 
@@ -84,7 +140,8 @@ export default function Card() {
             <input
               id="name"
               type="text"
-              defaultValue="Алекс"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
               className="mb-4 w-full rounded-2xl border border-zinc-500 bg-[var(--card-input-bg)] px-3 py-2.5 text-base outline-none transition focus:border-zinc-700 sm:px-4 sm:text-lg"
             />
 
@@ -94,6 +151,8 @@ export default function Card() {
             <input
               id="email"
               type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="example@gmail.com"
               className="mb-4 w-full rounded-2xl border border-zinc-300 bg-[var(--card-input-bg)] px-3 py-2.5 text-base outline-none transition focus:border-zinc-500 sm:px-4 sm:text-lg"
             />
@@ -102,7 +161,12 @@ export default function Card() {
             <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               <button
                 type="button"
-                className="flex items-center justify-between rounded-2xl border border-zinc-500 px-3 py-2.5 text-sm text-zinc-800 sm:text-base"
+                onClick={() => setContactType("telegram")}
+                className={`flex items-center justify-between rounded-2xl border px-3 py-2.5 text-sm sm:text-base ${
+                  contactType === "telegram"
+                    ? "border-zinc-500 text-zinc-800"
+                    : "border-zinc-300 text-zinc-500"
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Image
@@ -113,17 +177,30 @@ export default function Card() {
                   />
                   Телега
                 </span>
-                <span className="h-4 w-4 rounded-full border-2 border-zinc-500 bg-zinc-900" />
+                <span
+                  className={`h-4 w-4 rounded-full border-2 ${
+                    contactType === "telegram" ? "border-zinc-500 bg-zinc-900" : "border-zinc-400"
+                  }`}
+                />
               </button>
               <button
                 type="button"
-                className="flex items-center justify-between rounded-2xl border border-zinc-300 px-3 py-2.5 text-sm text-zinc-500 sm:text-base"
+                onClick={() => setContactType("whatsapp")}
+                className={`flex items-center justify-between rounded-2xl border px-3 py-2.5 text-sm sm:text-base ${
+                  contactType === "whatsapp"
+                    ? "border-zinc-500 text-zinc-800"
+                    : "border-zinc-300 text-zinc-500"
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Image src="/svg/Viber_black.svg" alt="Viber" width={20} height={20} />
                   Вацап
                 </span>
-                <span className="h-4 w-4 rounded-full border-2 border-zinc-400" />
+                <span
+                  className={`h-4 w-4 rounded-full border-2 ${
+                    contactType === "whatsapp" ? "border-zinc-500 bg-zinc-900" : "border-zinc-400"
+                  }`}
+                />
               </button>
             </div>
 
@@ -132,23 +209,44 @@ export default function Card() {
                 Ваш Telegram:
               </label>
               <span className="text-xs leading-tight text-[#ff6f6f] sm:text-sm">
-                Пожалуйста заполните поле
+                {submitError || ""}
               </span>
             </div>
             <input
               id="tg"
               type="text"
+              value={contact}
+              onChange={(event) => setContact(event.target.value)}
               placeholder="@username или номер телефона"
-              className="mb-8 w-full rounded-2xl border border-[#ff8f8f] bg-[var(--card-input-bg)] px-3 py-2.5 text-base text-zinc-500 outline-none transition focus:border-[#ff6f6f] sm:px-4 sm:text-lg"
+              className={`mb-4 w-full rounded-2xl border bg-[var(--card-input-bg)] px-3 py-2.5 text-base text-zinc-500 outline-none transition sm:px-4 sm:text-lg ${
+                submitError ? "border-[#ff8f8f] focus:border-[#ff6f6f]" : "border-zinc-300 focus:border-zinc-500"
+              }`}
             />
+
+            <label className="mb-2 block text-base text-zinc-600 sm:text-lg" htmlFor="message">
+              Комментарий (необязательно):
+            </label>
+            <textarea
+              id="message"
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              rows={3}
+              placeholder="Коротко опишите задачу..."
+              className="mb-6 w-full resize-none rounded-2xl border border-zinc-300 bg-[var(--card-input-bg)] px-3 py-2.5 text-base outline-none transition focus:border-zinc-500 sm:px-4 sm:text-lg"
+            />
+
+            {submitSuccess ? (
+              <p className="mb-4 text-sm text-emerald-600">{submitSuccess}</p>
+            ) : null}
 
             <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-end">
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-3 rounded-full border-b-8 border-zinc-900 bg-[#a9bffd] px-4 py-3 text-xl font-medium text-zinc-900 transition-colors hover:bg-[#98b1fb] sm:w-auto sm:justify-start sm:px-6 sm:text-2xl"
+                disabled={isSubmitting}
+                className="inline-flex w-full items-center justify-center gap-3 rounded-full border-b-8 border-zinc-900 bg-[#a9bffd] px-4 py-3 text-xl font-medium text-zinc-900 transition-colors hover:bg-[#98b1fb] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:justify-start sm:px-6 sm:text-2xl"
               >
                 <span className="text-xl sm:text-2xl">→</span>
-                Получить консультацию
+                {isSubmitting ? "Отправка..." : "Получить консультацию"}
               </button>
 
               <div className="flex items-center justify-center gap-2 self-end text-center sm:self-auto">

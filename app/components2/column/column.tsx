@@ -2,14 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-type ColumnId = "new" | "inProgress" | "agreed" | "rejected";
+type ColumnId = "new" | "in_progress" | "success" | "rejected";
 
 interface Lead {
-  id: string;
+  id: number;
   name: string;
-  phone: string;
+  email: string;
+  contact_type: "telegram" | "whatsapp";
+  contact: string;
+  message: string | null;
   status: ColumnId;
-  comment: string;
 }
 
 interface ColumnMeta {
@@ -19,58 +21,46 @@ interface ColumnMeta {
 
 const COLUMNS: ColumnMeta[] = [
   { id: "new", title: "1. Новые заявки" },
-  { id: "inProgress", title: "2. Заявки в работе" },
-  { id: "agreed", title: "3. Клиент согласился работать" },
+  { id: "in_progress", title: "2. Заявки в работе" },
+  { id: "success", title: "3. Клиент согласился работать" },
   { id: "rejected", title: "4. Нельзя связаться / не согласен работать" },
 ];
 
-const INITIAL_LEADS: Lead[] = [
-  { id: "lead-1", name: "Алина Смирнова", phone: "+7 777 101 22 33", status: "new", comment: "" },
-  { id: "lead-2", name: "Ерлан Т.", phone: "+7 777 222 11 90", status: "new", comment: "" },
-  { id: "lead-3", name: "Мария Соколова", phone: "+7 707 456 77 88", status: "inProgress", comment: "Запросила КП" },
-  { id: "lead-4", name: "Алексей Петров", phone: "+7 701 901 22 10", status: "agreed", comment: "Старт в понедельник" },
-];
+interface BoardResponse {
+  new: Lead[];
+  in_progress: Lead[];
+  success: Lead[];
+  rejected: Lead[];
+}
 
-const STORAGE_KEY = "marketing-admin-leads";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export function Column() {
-  const [leads, setLeads] = useState<Lead[]>(INITIAL_LEADS);
-  const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [draggedLeadId, setDraggedLeadId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
+  const loadBoard = async () => {
+    setIsLoading(true);
+    setError("");
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-
-      const parsed = JSON.parse(raw) as Lead[];
-      if (!Array.isArray(parsed)) return;
-
-      const validStatuses: ColumnId[] = ["new", "inProgress", "agreed", "rejected"];
-      const normalized = parsed.filter(
-        (lead) =>
-          lead &&
-          typeof lead.id === "string" &&
-          typeof lead.name === "string" &&
-          typeof lead.phone === "string" &&
-          typeof lead.comment === "string" &&
-          validStatuses.includes(lead.status)
-      );
-
-      if (normalized.length > 0) {
-        setLeads(normalized);
+      const response = await fetch(`${API_BASE_URL}/public/leads/board`, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error("Не удалось загрузить заявки.");
       }
-    } catch {
-      // Ignore broken localStorage data and keep defaults.
+      const board = (await response.json()) as BoardResponse;
+      setLeads([...board.new, ...board.in_progress, ...board.success, ...board.rejected]);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : "Ошибка загрузки.");
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
-    } catch {
-      // Ignore quota/localStorage access errors.
-    }
-  }, [leads]);
+    loadBoard();
+  }, []);
 
   const grouped = useMemo(() => {
     return COLUMNS.map((column) => ({
@@ -79,20 +69,31 @@ export function Column() {
     }));
   }, [leads]);
 
-  const moveLead = (leadId: string, nextStatus: ColumnId) => {
+  const moveLead = (leadId: number, nextStatus: ColumnId) => {
     setLeads((prev) =>
       prev.map((lead) => (lead.id === leadId ? { ...lead, status: nextStatus } : lead))
     );
   };
 
-  const handleDrop = (columnId: ColumnId) => {
+  const handleDrop = async (columnId: ColumnId) => {
     if (!draggedLeadId) return;
+    const previous = leads;
     moveLead(draggedLeadId, columnId);
     setDraggedLeadId(null);
-  };
 
-  const updateComment = (leadId: string, comment: string) => {
-    setLeads((prev) => prev.map((lead) => (lead.id === leadId ? { ...lead, comment } : lead)));
+    try {
+      const response = await fetch(`${API_BASE_URL}/public/leads/${draggedLeadId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: columnId }),
+      });
+      if (!response.ok) {
+        throw new Error("Не удалось сохранить статус.");
+      }
+    } catch {
+      setLeads(previous);
+      setError("Не удалось сохранить статус на сервере.");
+    }
   };
 
   return (
@@ -103,6 +104,8 @@ export function Column() {
           {leads.length} клиентов
         </span>
       </div>
+      {error ? <p className="mb-3 text-sm text-red-500">{error}</p> : null}
+      {isLoading ? <p className="mb-3 text-sm text-[var(--design-muted)]">Загрузка заявок...</p> : null}
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {grouped.map((column) => (
@@ -129,18 +132,15 @@ export function Column() {
                   className="cursor-grab rounded-xl border border-black/5 bg-[var(--team-surface)] p-3 active:cursor-grabbing dark:border-white/10"
                 >
                   <p className="text-sm font-semibold text-[var(--foreground)]">{lead.name}</p>
-                  <p className="mt-1 text-xs text-[var(--design-muted)]">{lead.phone}</p>
-
-                  <label className="mt-3 block text-xs font-medium text-[var(--design-muted)]">
-                    Комментарий
-                    <textarea
-                      value={lead.comment}
-                      onChange={(event) => updateComment(lead.id, event.target.value)}
-                      rows={3}
-                      className="mt-1 w-full resize-none rounded-lg border border-black/10 bg-[var(--background)] px-2 py-2 text-xs text-[var(--foreground)] outline-none placeholder:text-[var(--design-muted)] focus:border-[var(--design-btn)] dark:border-white/20"
-                      placeholder="Добавьте комментарий..."
-                    />
-                  </label>
+                  <p className="mt-1 text-xs text-[var(--design-muted)]">{lead.email}</p>
+                  <p className="mt-1 text-xs text-[var(--design-muted)]">
+                    {lead.contact_type === "telegram" ? "Telegram" : "WhatsApp"}: {lead.contact}
+                  </p>
+                  {lead.message ? (
+                    <p className="mt-3 rounded-lg bg-[var(--background)] px-2 py-2 text-xs text-[var(--foreground)]">
+                      {lead.message}
+                    </p>
+                  ) : null}
                 </article>
               ))}
             </div>
