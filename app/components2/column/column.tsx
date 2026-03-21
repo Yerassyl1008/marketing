@@ -141,12 +141,15 @@ export function Column() {
         let msg = `Удаление не удалось (${response.status}).`;
         try {
           const data = (await response.json()) as {
+            userMessage?: string;
             hint?: string;
             error?: string;
             detail?: string;
           };
-          if (data.hint) msg = data.hint;
-          else if (data.error) msg = `${data.error}${data.detail ? ` — ${data.detail}` : ""}`;
+          if (data.userMessage) msg = data.userMessage;
+          else if (data.hint) msg = data.hint;
+          else if (data.error)
+            msg = `${data.error}${data.detail ? ` — ${data.detail}` : ""}`;
         } catch {
           /* ignore */
         }

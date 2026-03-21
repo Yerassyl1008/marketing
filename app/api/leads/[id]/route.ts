@@ -145,9 +145,24 @@ export async function DELETE(
       (Boolean(process.env.CRM_ADMIN_EMAIL?.trim()) &&
         Boolean(process.env.CRM_ADMIN_PASSWORD?.trim()));
 
+    const hint502 = !hasCreds
+      ? process.env.VERCEL
+        ? "В Vercel → Settings → Environment Variables: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN."
+        : "В my-app/.env.local: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN. Перезапусти dev."
+      : !token
+        ? `Логин в CRM не удалился (email/пароль, доступность ${CRM}). ${vercelCrmHint()}`
+        : `Проверь DELETE /leads/{id} и существование лида. ${isLocalhostUrl(CRM) && process.env.VERCEL ? vercelCrmHint() : ""}`;
+
+    const userMessage502 = !hasCreds
+      ? "Нет доступа к CRM: в настройках сервера задай CRM_ADMIN_EMAIL и CRM_ADMIN_PASSWORD (или CRM_API_TOKEN)."
+      : !token
+        ? "Не удалось войти в CRM. Проверь логин/пароль. На Vercel адрес CRM должен быть публичным (https://…), не localhost."
+        : "CRM не выполнил удаление. Возможно, заявки уже нет или сбой API.";
+
     return NextResponse.json(
       {
         error: "Delete failed — CRM отклонил все варианты запроса",
+        userMessage: userMessage502,
         crm: CRM,
         hadAuth: hasCreds && Boolean(token),
         loginFailed:
@@ -156,13 +171,7 @@ export async function DELETE(
           Boolean(process.env.CRM_ADMIN_PASSWORD) &&
           !token,
         attempts: failures,
-        hint: !hasCreds
-          ? process.env.VERCEL
-            ? "В Vercel → Settings → Environment Variables: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN."
-            : "В my-app/.env.local: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN. Перезапусти dev."
-          : !token
-            ? `Логин в CRM не удалился (email/пароль, доступность ${CRM}). ${vercelCrmHint()}`
-            : `Проверь DELETE /leads/{id} и существование лида. ${isLocalhostUrl(CRM) && process.env.VERCEL ? vercelCrmHint() : ""}`,
+        hint: hint502,
       },
       { status: 502 }
     );
@@ -171,6 +180,10 @@ export async function DELETE(
     return NextResponse.json(
       {
         error: "CRM недоступен с сервера Next",
+        userMessage:
+          process.env.VERCEL
+            ? "Сервер сайта не достучался до CRM. В Vercel укажи CRM_API_URL с публичным https:// адресом API (не localhost)."
+            : "Не удаётся связаться с CRM. Запусти API (uvicorn) и проверь CRM_API_URL.",
         crm: CRM,
         detail: message,
         hint: vercelCrmHint(),
