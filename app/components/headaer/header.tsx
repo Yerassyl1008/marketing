@@ -14,6 +14,18 @@ const languages = ["ru", "en", "fr", "ar", "de"] as const;
 // ];
 const THEME_STORAGE_KEY = "site-theme";
 
+/** Короткие подписи языков (как в макете: RU, ENG, …) */
+function localeShortLabel(code: string) {
+  const map: Record<string, string> = {
+    ru: "RU",
+    en: "ENG",
+    fr: "FR",
+    ar: "AR",
+    de: "DE",
+  };
+  return map[code] ?? code.toUpperCase();
+}
+
 export default function Header() {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -25,6 +37,8 @@ export default function Header() {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+
+  const localeBase = String(locale).split("-")[0].toLowerCase();
 
   const navLinks = [
     { label: t('team'), href: "/team" },
@@ -39,7 +53,7 @@ export default function Header() {
   }
 
   function switchToNextLocale() {
-    const currentIndex = languages.indexOf(locale as (typeof languages)[number]);
+    const currentIndex = languages.indexOf(localeBase as (typeof languages)[number]);
     const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % languages.length;
     handleLocaleChange(languages[nextIndex]);
   }
@@ -113,27 +127,51 @@ export default function Header() {
             <div className="relative" ref={languageRef}>
               <button
                 type="button"
+                aria-expanded={isLanguageOpen}
+                aria-haspopup="listbox"
                 onClick={() => setIsLanguageOpen((prev) => !prev)}
-                className="flex items-center justify-center gap-2 rounded-full px-2 py-1"
+                className="flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm transition hover:opacity-90"
               >
-                <span>{locale.toUpperCase()}</span>
-                <Image src="/svg/chevron-right.svg" alt="arrow-down" width={10} height={10} />
+                <span>{localeShortLabel(localeBase)}</span>
+                <Image
+                  src="/svg/chevron-right.svg"
+                  alt=""
+                  width={9}
+                  height={9}
+                  className={`transition-transform  items-center duration-200 ${isLanguageOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               {isLanguageOpen && (
-                <div className="absolute left-0 top-12 z-20 w-full rounded-3xl border border-zinc-300 bg-zinc-100 p-1 shadow-sm">
-                  {languages
-                    .filter((lang) => lang !== locale)
-                    .map((lang) => (
-                      <button
-                        key={lang}
-                        type="button"
-                        onClick={() => handleLocaleChange(lang)}
-                        className="flex w-full items-center justify-center rounded-full px-2 py-1 text-zinc-600 transition hover:bg-zinc-200"
-                      >
-                        {lang.toUpperCase()}
-                      </button>
-                    ))}
+                <div
+                  className="absolute left-1/2 top-full z-30 mt-1.5 min-w-[5.5rem] -translate-x-1/2 rounded-2xl border border-[color:var(--foreground)]/12 bg-[var(--header-bg)] p-1.5 shadow-sm dark:border-white/12"
+                  role="listbox"
+                  aria-label="Язык интерфейса"
+                >
+                  <ul className="flex flex-col gap-1">
+                    {languages.map((lang) => {
+                      const active = lang === localeBase;
+                      return (
+                        <li key={lang}>
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={active}
+                            onClick={() =>
+                              active ? setIsLanguageOpen(false) : handleLocaleChange(lang)
+                            }
+                            className={
+                              active
+                                ? "flex w-full items-center justify-center rounded-full border border-[var(--foreground)] px-2 py-1.5 text-xs font-medium text-[var(--foreground)] transition-all duration-200"
+                                : "flex w-full items-center justify-center rounded-full border border-transparent px-2 py-1.5 text-xs font-medium text-[var(--design-muted)] transition-all duration-200 hover:border-[var(--design-btn)] hover:text-[var(--foreground)] hover:shadow-[0_0_12px_rgba(172,194,253,0.5)] dark:hover:shadow-[0_0_14px_rgba(95,119,184,0.45)]"
+                            }
+                          >
+                            {localeShortLabel(lang)}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               )}
             </div>
@@ -216,7 +254,7 @@ export default function Header() {
             </button>
 
             <button type="button" className="flex items-center gap-2 text-2xl" onClick={switchToNextLocale}>
-              {locale.toUpperCase()}
+              {localeShortLabel(localeBase)}
               <Image src="/svg/chevron-right.svg" alt="arrow" width={12} height={12} />
             </button>
 

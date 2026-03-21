@@ -1,14 +1,19 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Design() {
+  const t = useTranslations("design");
+
   return (
     <section className="relative pb-16 pt-6 md:pb-20 md:mx-10">
       <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-10">
         <div className="flex w-full justify-start md:w-[40%] md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1 (2) 1.png"
-            alt="hero"
+            alt={t("imageAlt")}
             width={600}
             height={600}
             className="h-auto w-full max-w-[400px] md:max-w-[600px]"
@@ -17,35 +22,39 @@ export default function Design() {
 
         <div className="w-full min-w-0 md:w-[46%] md:max-w-[800px]">
           <div className="mb-4 flex items-center gap-2 text-sm text-[var(--design-muted)]">
-            <span>⌂</span>
-            <span>›</span>
-            <span>Команда</span>
-            <span>›</span>
-            <span className="font-semibold text-[var(--design-text)]">Анастасия Яковлева</span>
+            <span aria-hidden>⌂</span>
+            <span aria-hidden>›</span>
+            <span>{t("breadcrumbTeam")}</span>
+            <span aria-hidden>›</span>
+            <span className="font-semibold text-[var(--design-text)]">
+              {t("breadcrumbName")}
+            </span>
           </div>
 
           <h2 className="mb-3 text-5xl font-extrabold leading-[105%] text-[var(--design-title)] md:text-6xl">
             <span className="inline-block rounded-full bg-[var(--design-accent)] px-4 py-1">
-              SMM-Дизайнер
+              {t("titleHighlight")}
             </span>
             <br />
-            &amp; Контент-мейкер
+            {t("titleSecondLine")}
           </h2>
 
           <p className="mb-5 max-w-[520px] text-sm leading-6 text-[var(--design-text)] md:text-base">
-            Создаёт визуальный голос бренда — от стратегии до пикселя.
-            Превращает идеи в контент, который запоминают и которым делятся.
+            {t("description")}
           </p>
 
-          <button className="flex items-center gap-2 rounded-full bg-[var(--design-btn)] px-6 py-3 text-base transition-colors duration-300 hover:bg-[var(--design-btn-hover)]">
+          <Link
+            href="/connect"
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--design-btn)] px-6 py-3 text-base transition-colors duration-300 hover:bg-[var(--design-btn-hover)]"
+          >
             <Image
               src="/svg/solar_calculator-broken.svg"
-              alt="calculator"
+              alt={t("calculatorAlt")}
               width={20}
               height={20}
             />
-            Связаться с нами
-          </button>
+            {t("contactButton")}
+          </Link>
         </div>
       </div>
 
@@ -53,29 +62,43 @@ export default function Design() {
         <div className="flex items-center gap-2">
           <Link
             href="#"
-            aria-label="Instagram"
+            aria-label={t("socialInstagram")}
             className="grid place-items-center rounded-full  text-[10px] text-white 
           "
           >
-            <Image src="/svg/Instagram_black.svg" alt="Instagram" width={30} height={30} />
+            <Image
+              src="/svg/Instagram_black.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
           </Link>
           <Link
             href="#"
-            aria-label="Telegram"
+            aria-label={t("socialTelegram")}
             className="grid place-items-center rounded-full  text-[10px] text-white 
           "
           >
-            <Image src="/svg/Telegram_black.svg" alt="Telegram" width={30} height={30} />
+            <Image
+              src="/svg/Telegram_black.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
           </Link>
           <Link
             href="#"
-            aria-label="Viber"
+            aria-label={t("socialViber")}
             className="grid place-items-center rounded-full  text-[10px] text-white 
           "
           >
-            <Image src="/svg/Viber_black.svg" alt="Viber" width={30} height={30} />
+            <Image
+              src="/svg/Viber_black.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
           </Link>
-          
         </div>
       </div>
     </section>

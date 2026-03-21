@@ -2,55 +2,53 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
-const workers = [
+const workerDefs = [
   {
-    name: "Анастасия Яковлева",
-    role: "Дизайнер",
-    experience: "3 года опыта",
+    id: "anastasia",
     image: "/img/workers/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1.jpg",
   },
   {
-    name: "Алексей Петров",
-    role: "Таргетолог",
-    experience: "5 лет опыта",
+    id: "alexey",
     image: "/img/workers/man-with-curly-hair-smiles-isolated 1.jpg",
   },
   {
-    name: "Мария Соколова",
-    role: "SMM-специалист",
-    experience: "4 года опыта",
+    id: "maria",
     image: "/img/workers/beautifuan-woman-with-curly-hair-smiles-isolated 1.jpg",
   },
   {
-    name: "Арина Кузнецова",
-    role: "SEO-специалист",
-    experience: "7 лет опыта",
+    id: "arina",
     image: "/img/workers/dawda.jpg",
   },
   {
-    name: "Вячеслав Макушев",
-    role: "Таргетолог",
-    experience: "4 года опыта",
+    id: "vyacheslav",
     image: "/img/workers/beautifull-caucasiany-hair-smiles-isolated 1.jpg",
   },
   {
-    name: "Иван Тихонов",
-    role: "Менеджер",
-    experience: "6 лет опыта",
+    id: "ivan",
     image: "/img/workers/man-with-curly-hair-smiles-isolated 1.jpg",
   },
   {
-    name: "Елизавета Орлова",
-    role: "Контент-менеджер",
-    experience: "5 лет опыта",
+    id: "elizaveta",
     image: "/img/workers/beautifuan-woman-with-curly-hair-smiles-isolated 1.jpg",
   },
 ];
 
 export default function Workers() {
+  const t = useTranslations("workers");
   const [desktopPage, setDesktopPage] = useState(0);
   const [mobileVisibleCount, setMobileVisibleCount] = useState(6);
+  const workers = useMemo(
+    () =>
+      workerDefs.map((worker) => ({
+        ...worker,
+        name: t(`items.${worker.id}.name`),
+        role: t(`items.${worker.id}.role`),
+        experience: t(`items.${worker.id}.experience`),
+      })),
+    [t]
+  );
 
   const DESKTOP_PAGE_SIZE = 5;
   const desktopPageCount = Math.ceil(workers.length / DESKTOP_PAGE_SIZE);
@@ -69,7 +67,7 @@ export default function Workers() {
   return (
     <section className="mt-8 px-3 py-8 md:px-8 md:py-10">
       <h2 className="mb-8 text-center text-4xl font-extrabold text-[var(--workers-title)] md:mb-12 md:text-5xl">
-        Специалисты
+        {t("title")}
       </h2>
 
       <div className="relative hidden lg:block">
@@ -101,7 +99,7 @@ export default function Workers() {
                     <button
                       type="button"
                       className="grid h-9 w-9 place-items-center rounded-full bg-[#acc2fd] text-lg text-zinc-800"
-                      aria-label="Открыть профиль"
+                      aria-label={t("openProfile")}
                     >
                       ↗
                     </button>
@@ -114,7 +112,7 @@ export default function Workers() {
 
         <button
           type="button"
-          aria-label="Следующий слайд"
+          aria-label={t("nextSlide")}
           onClick={() =>
             setDesktopPage((prev) => (prev + 1) % Math.max(desktopPageCount, 1))
           }
@@ -144,7 +142,7 @@ export default function Workers() {
                   <button
                     type="button"
                     className="grid h-8 w-8 place-items-center rounded-full bg-[#acc2fd] text-base text-zinc-800"
-                    aria-label="Открыть профиль"
+                    aria-label={t("openProfile")}
                   >
                     ↗
                   </button>
@@ -162,7 +160,7 @@ export default function Workers() {
             onClick={() => setMobileVisibleCount((prev) => Math.min(prev + 2, workers.length))}
             className="rounded-full bg-[#f5d58d] px-5 py-3 text-sm font-semibold text-zinc-800 shadow"
           >
-            Показать ещё
+            {t("showMore")}
           </button>
         </div>
       )}

@@ -1,68 +1,66 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type ServiceSection = {
   id: string;
-  title: string;
-  items: string[];
+  itemIds: string[];
 };
 
 const sections: ServiceSection[] = [
   {
     id: "popular",
-    title: "Самые частые заказы",
-    items: [
-      "Таргетированная реклама Meta, VK, TikTok",
-      "Контекстная реклама Google Ads / Я.Директ",
-      "SEO-продвижение сайта",
-      "Создание сайта корпоративного",
-      "SMM - ведение социальных сетей",
-      "Разработка рекламных креативов",
-      "Копирайтинг (тексты для сайта, рекламы)",
-      "Настройка аналитики (Google Analytics, Я.Метрика)",
-      "Email-маркетинг (настройка рассылок)",
+    itemIds: [
+      "targetedMetaVkTiktok",
+      "contextGoogleYandex",
+      "seoPromotion",
+      "corporateWebsite",
+      "smmManagement",
+      "adCreatives",
+      "copywriting",
+      "analyticsSetup",
+      "emailMarketing",
     ],
   },
   {
     id: "middle",
-    title: "Средняя частота заказа",
-    items: [
-      "Редизайн сайта",
-      "UX/UI-дизайн",
-      "A/B-тестирование рекламы и посадочных страниц",
-      "Продвижение на маркетплейсах",
-      "Создание интернет-магазина",
-      "Influencer-реклама (подбор блогеров)",
-      "Видеореклама / видеопродакшн",
-      "Настройка CRM и автоматизации",
-      "Локальное SEO (карты, Google Business Profile)",
+    itemIds: [
+      "websiteRedesign",
+      "uxUiDesign",
+      "abTesting",
+      "marketplacePromotion",
+      "onlineStoreCreation",
+      "influencerAds",
+      "videoProduction",
+      "crmAutomation",
+      "localSeo",
     ],
   },
   {
     id: "rare",
-    title: "Реже, но регулярно заказывают",
-    items: [
-      "Разработка логотипа",
-      "Разработка фирменного стиля",
-      "PR-размещение в СМИ",
-      "Брендбук",
-      "Маркетинговые исследования",
-      "Фотосъемка для бизнеса",
-      "Разработка презентаций",
-      "Чат-боты для сайта / мессенджеров",
-      "Разработка квиз-лендингов",
+    itemIds: [
+      "logoDesign",
+      "brandIdentity",
+      "prPublications",
+      "brandbook",
+      "marketingResearch",
+      "businessPhotography",
+      "presentationDesign",
+      "chatbots",
+      "quizLandingPages",
     ],
   },
 ];
 
 export default function Services() {
+  const t = useTranslations("servicesSection");
   const [openedSection, setOpenedSection] = useState<string>("popular");
 
   return (
     <section className="mt-8  px-3 py-8 md:px-8 md:py-10">
       <h2 className="mb-10 text-center text-3xl font-bold text-[var(--services-title)] md:mb-16 md:text-4xl">
-        Услуги
+        {t("title")}
       </h2>
 
       <div className="space-y-4 md:space-y-8">
@@ -80,7 +78,7 @@ export default function Services() {
                 aria-expanded={isOpenMobile}
               >
                 <span className="text-1xl font-semibold text-[var(--services-title)] md:text-2xl mb-2">
-                  {section.title}
+                  {t(`sections.${section.id}.title`)}
                 </span>
                 <span className="text-xl text-zinc-500 md:hidden">
                   {isOpenMobile ? "⌃" : "⌄"}
@@ -92,12 +90,12 @@ export default function Services() {
                   isOpenMobile ? "block" : "hidden"
                 } md:block`}
               >
-                {section.items.map((item, index) => {
+                {section.itemIds.map((itemId, index) => {
                   const isActive = section.id === "popular" && index === 0;
 
                   return (
                     <div
-                      key={item}
+                      key={`${section.id}-${itemId}`}
                       className={`flex min-h-[112px] items-start gap-2 rounded-2xl px-3 py-4 md:min-h-16 md:items-center md:rounded-full ${
                         isActive
                           ? "bg-[#9ab5f6] text-[var(--services-title)]"
@@ -105,7 +103,7 @@ export default function Services() {
                       }`}
                     >
                       <span className="mt-1 h-3 w-3 flex-shrink-0 rounded-full border border-zinc-400 md:mt-0" />
-                      <span className="text-xs leading-5 md:text-sm">{item}</span>
+                      <span className="text-xs leading-5 md:text-sm">{t(`sections.${section.id}.items.${itemId}`)}</span>
                     </div>
                   );
                 })}

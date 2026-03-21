@@ -3,7 +3,7 @@ import Hero from "../../components/hero/hero";
 import Workers from "../../components/workers/workers";
 import Services from "../../components/services/services";
 import Card from "../../components/card/card";
-import Work from "../../components/work/work";
+// import Work from "../../components/work/work";
 import Projects from "../../components/projects/projects";
 import Comment from "../../components/comment/comment";
 import Footer from "../../components/footer/footer";
@@ -21,7 +21,7 @@ export default function MainPage() {
       <Workers />
       <Services />
       <Card />
-      <Work />
+      {/* <Work /> */}
       <Projects />
       <Comment />
     </div>

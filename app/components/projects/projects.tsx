@@ -1,50 +1,37 @@
-import Image from "next/image";
+"use client";
 
-const projects = [
-  {
-    title: "Сильпо",
-    category: "Розничная торговля",
-    description: "Комплексное продвижение крупной сети супермаркетов в Instagram и Google",
-    price: "300€ в месяц",
-  },
-  {
-    title: "Сильпо",
-    category: "Розничная торговля",
-    description: "Комплексное продвижение крупной сети супермаркетов в Instagram и Google",
-    price: "300€ в месяц",
-  },
-  {
-    title: "Сильпо",
-    category: "Розничная торговля",
-    description: "Комплексное продвижение крупной сети супермаркетов в Instagram и Google",
-    price: "300€ в месяц",
-  },
-  {
-    title: "Сильпо",
-    category: "Розничная торговля",
-    description: "Комплексное продвижение крупной сети супермаркетов в Instagram и Google",
-    price: "300€ в месяц",
-  },
-];
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
+const CARD_COUNT = 4;
 
 export default function Projects() {
+  const t = useTranslations("portfolio");
+  const project = {
+    title: t("items.silpo.title"),
+    category: t("items.silpo.category"),
+    description: t("items.silpo.description"),
+    price: t("items.silpo.price"),
+  };
+
   return (
     <section className="mt-10 px-4 py-8 lg:px-8 lg:py-10">
-      <h2 className="text-4xl font-bold text-zinc-800 lg:text-5xl">Портфолио</h2>
+      <h2 className="text-4xl font-bold text-zinc-800 lg:text-5xl">{t("title")}</h2>
       <div className="mb-6 flex items-center justify-center lg:mb-8 lg:justify-end">
         <button
           type="button"
           className="hidden items-center gap-2 rounded-full bg-[#f2d48c] px-5 py-2 text-sm font-semibold text-zinc-800 shadow-sm transition-colors hover:bg-[#ebc873] lg:inline-flex"
         >
-          ↗ Все проекты
+          <span aria-hidden>↗</span>
+          {t("allProjects")}
         </button>
       </div>
 
       <div className="relative">
         <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0">
-          {projects.map((project, index) => (
+          {Array.from({ length: CARD_COUNT }, (_, index) => (
             <article
-              key={`${project.title}-${index}`}
+              key={index}
               className="min-w-[260px] snap-start rounded-3xl bg-(var(--workers-bg)) shadow lg:min-w-0"
             >
               <div className="relative h-44 w-full  rounded-b-3xl rounded-t-3xl">
@@ -69,7 +56,7 @@ export default function Projects() {
 
                 <div className="flex items-end justify-between gap-2">
                   <div className="flex items-center gap-2 rounded-2xlpx-4 py-2 bg-(var(--projects-span-bg))">
-                    <p className="text-sm text-zinc-400 lg:text-sm">Цена</p>
+                    <p className="text-sm text-zinc-400 lg:text-sm">{t("priceLabel")}</p>
                     <p className="text-xl font-medium text-(var(--foreground)) lg:text-2xl">
                       {project.price}
                     </p>
@@ -77,9 +64,9 @@ export default function Projects() {
                   <button
                     type="button"
                     className="grid h-12 w-12 place-items-center rounded-full bg-[#9ab5f6] text-4xl text-zinc-800 lg:h-10 lg:w-10 lg:text-2xl"
-                    aria-label="Открыть проект"
+                    aria-label={t("openProject")}
                   >
-                    ↗
+                    <span aria-hidden>↗</span>
                   </button>
                 </div>
               </div>
@@ -89,17 +76,17 @@ export default function Projects() {
 
         <button
           type="button"
-          aria-label="Предыдущий слайд"
+          aria-label={t("prevSlide")}
           className="absolute -left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-zinc-200 bg-white text-zinc-700 shadow lg:grid"
         >
-          ←
+          <span aria-hidden>←</span>
         </button>
         <button
           type="button"
-          aria-label="Следующий слайд"
+          aria-label={t("nextSlide")}
           className="absolute -right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-zinc-200 bg-white text-zinc-700 shadow lg:grid"
         >
-          →
+          <span aria-hidden>→</span>
         </button>
       </div>
 

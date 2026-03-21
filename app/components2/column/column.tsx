@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { Trash2 } from "lucide-react";
 
 type ColumnId = "new" | "in_progress" | "success" | "rejected";
 
@@ -35,11 +37,22 @@ interface BoardResponse {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+/** Удаление через Next API (прокси + JWT), чтобы обойти 404/405 на прямых вызовах к :8000 */
+async function deleteLeadOnServer(leadId: number): Promise<Response> {
+  return fetch(`/api/leads/${leadId}`, { method: "DELETE" });
+}
+
 export function Column() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [draggedLeadId, setDraggedLeadId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const loadBoard = async () => {
     setIsLoading(true);
@@ -75,6 +88,12 @@ export function Column() {
     );
   };
 
+  const updateLeadMessageLocal = (leadId: number, message: string) => {
+    setLeads((prev) =>
+      prev.map((lead) => (lead.id === leadId ? { ...lead, message } : lead))
+    );
+  };
+
   const handleDrop = async (columnId: ColumnId) => {
     if (!draggedLeadId) return;
     const previous = leads;
@@ -96,6 +115,70 @@ export function Column() {
     }
   };
 
+  const saveLeadMessage = async (leadId: number, message: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/public/leads/${leadId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message.trim() || null }),
+      });
+      if (!response.ok) {
+        throw new Error("Не удалось сохранить комментарий.");
+      }
+    } catch {
+      setError("Не удалось сохранить комментарий на сервере.");
+    }
+  };
+
+  const executeDelete = async (leadId: number) => {
+    const previous = leads;
+    setLeads((prev) => prev.filter((l) => l.id !== leadId));
+    setPendingDeleteId(null);
+    setError("");
+    try {
+      const response = await deleteLeadOnServer(leadId);
+      if (!response.ok) {
+        let msg = `Удаление не удалось (${response.status}).`;
+        try {
+          const data = (await response.json()) as {
+            hint?: string;
+            error?: string;
+            detail?: string;
+          };
+          if (data.hint) msg = data.hint;
+          else if (data.error) msg = `${data.error}${data.detail ? ` — ${data.detail}` : ""}`;
+        } catch {
+          /* ignore */
+        }
+        setLeads(previous);
+        setError(msg);
+        return;
+      }
+    } catch {
+      setLeads(previous);
+      setError("Сеть или сервер Next недоступны.");
+    }
+  };
+
+  const pendingDeleteLead = useMemo(
+    () => (pendingDeleteId == null ? null : leads.find((l) => l.id === pendingDeleteId) ?? null),
+    [pendingDeleteId, leads]
+  );
+
+  useEffect(() => {
+    if (pendingDeleteId == null) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setPendingDeleteId(null);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [pendingDeleteId]);
+
   return (
     <section className="rounded-[28px] bg-[var(--team-surface)] p-3 shadow-sm sm:p-4 md:rounded-[36px] md:p-6">
       <div className="mb-4 flex items-center justify-between gap-2">
@@ -106,6 +189,51 @@ export function Column() {
       </div>
       {error ? <p className="mb-3 text-sm text-red-500">{error}</p> : null}
       {isLoading ? <p className="mb-3 text-sm text-[var(--design-muted)]">Загрузка заявок...</p> : null}
+
+      {mounted &&
+        pendingDeleteId != null &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-lead-dialog-title"
+          >
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/40 backdrop-blur-[2px] dark:bg-black/60"
+              aria-label="Закрыть"
+              onClick={() => setPendingDeleteId(null)}
+            />
+            <div className="relative z-10 w-full max-w-md rounded-3xl border border-[color:var(--foreground)]/12 bg-[var(--header-bg)] p-6 shadow-xl dark:border-white/10">
+              <h3 id="delete-lead-dialog-title" className="text-lg font-bold text-[var(--foreground)]">
+                Удалить заявку?
+              </h3>
+              <p className="mt-2 text-sm text-[var(--design-muted)]">
+                {pendingDeleteLead
+                  ? `Заявка «${pendingDeleteLead.name}» будет удалена без возможности восстановления.`
+                  : "Эта заявка будет удалена без возможности восстановления."}
+              </p>
+              <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setPendingDeleteId(null)}
+                  className="rounded-2xl border border-[color:var(--foreground)]/15 bg-[var(--background)] px-5 py-2.5 text-sm font-semibold text-[var(--foreground)] transition hover:bg-[var(--projects-span-bg)] dark:border-white/15"
+                >
+                  Отмена
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void executeDelete(pendingDeleteId)}
+                  className="rounded-2xl bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600"
+                >
+                  Удалить
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {grouped.map((column) => (
@@ -131,16 +259,39 @@ export function Column() {
                   onDragEnd={() => setDraggedLeadId(null)}
                   className="cursor-grab rounded-xl border border-black/5 bg-[var(--team-surface)] p-3 active:cursor-grabbing dark:border-white/10"
                 >
-                  <p className="text-sm font-semibold text-[var(--foreground)]">{lead.name}</p>
-                  <p className="mt-1 text-xs text-[var(--design-muted)]">{lead.email}</p>
-                  <p className="mt-1 text-xs text-[var(--design-muted)]">
-                    {lead.contact_type === "telegram" ? "Telegram" : "WhatsApp"}: {lead.contact}
-                  </p>
-                  {lead.message ? (
-                    <p className="mt-3 rounded-lg bg-[var(--background)] px-2 py-2 text-xs text-[var(--foreground)]">
-                      {lead.message}
-                    </p>
-                  ) : null}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-[var(--foreground)]">{lead.name}</p>
+                      <p className="mt-1 text-xs text-[var(--design-muted)]">{lead.email}</p>
+                      <p className="mt-1 text-xs text-[var(--design-muted)]">
+                        {lead.contact_type === "telegram" ? "Telegram" : "WhatsApp"}: {lead.contact}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      title="Удалить заявку"
+                      aria-label="Удалить заявку"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPendingDeleteId(lead.id);
+                      }}
+                      className="shrink-0 rounded-lg p-1.5 text-[var(--design-muted)] transition hover:bg-red-500/10 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
+                    >
+                      <Trash2 size={16} strokeWidth={2} />
+                    </button>
+                  </div>
+                  <label className="mt-3 block text-xs font-medium text-[var(--design-muted)]">
+                    Комментарий для менеджера
+                    <textarea
+                      value={lead.message ?? ""}
+                      onChange={(event) => updateLeadMessageLocal(lead.id, event.target.value)}
+                      onBlur={(event) => saveLeadMessage(lead.id, event.target.value)}
+                      rows={3}
+                      placeholder="Напишите комментарий..."
+                      className="mt-1 w-full resize-none rounded-lg border border-black/10 bg-[var(--background)] px-2 py-2 text-xs text-[var(--foreground)] outline-none placeholder:text-[var(--design-muted)] focus:border-[var(--design-btn)] dark:border-white/20"
+                    />
+                  </label>
                 </article>
               ))}
             </div>

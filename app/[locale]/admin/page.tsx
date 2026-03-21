@@ -5,20 +5,34 @@ import { Sidebar } from "@/app/components2/sidebar/sidebar";
 import { SecondHeader } from "@/app/components2/second-header/second-header";
 import { User } from "@/app/components2/second-header/second-header";
 import { useEffect, useState } from "react";
+import { useRouter } from "@/i18n/navigation";
+import { ADMIN_AUTH_KEY, ADMIN_THEME_KEY } from "@/lib/admin-auth";
 
-const ADMIN_THEME_KEY = "marketing-admin-theme";
-
-export default function AdminPage() { 
+export default function AdminPage() {
+  const router = useRouter();
+  const [authGate, setAuthGate] = useState<"loading" | "ok">("loading");
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [user] = useState<User>({
     id: "1",
     name: "Aibek",
-    avatar: "https://via.placeholder.com/150",
+    avatar: "/img/Mask group.png",
     role: "Student",
     rank: 1,
     solved: 100,
   });
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(ADMIN_AUTH_KEY) !== "1") {
+        router.replace("/admin/login");
+        return;
+      }
+      setAuthGate("ok");
+    } catch {
+      router.replace("/admin/login");
+    }
+  }, [router]);
 
   useEffect(() => {
     try {
@@ -46,12 +60,30 @@ export default function AdminPage() {
     }
   }, [isDark]);
 
+  if (authGate !== "ok") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
+        <div
+          className="h-9 w-9 animate-spin rounded-full border-2 border-[var(--design-btn)] border-t-transparent"
+          aria-hidden
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto min-h-screen w-full max-w-[1900px] bg-[var(--background)]">
       <Sidebar
         isMobileOpen={isMobileOpen}
         closeMobile={() => setIsMobileOpen(false)}
-        onLogout={() => {}}
+        onLogout={() => {
+          try {
+            sessionStorage.removeItem(ADMIN_AUTH_KEY);
+          } catch {
+            /* ignore */
+          }
+          router.replace("/admin/login");
+        }}
       />
 
       <div className="min-h-screen min-w-0 lg:pl-64">
