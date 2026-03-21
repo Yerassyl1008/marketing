@@ -10,6 +10,28 @@ function crmBase(): string {
   );
 }
 
+function isLocalhostUrl(url: string): boolean {
+  try {
+    const u = new URL(url);
+    return u.hostname === "localhost" || u.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
+/** На Vercel (и любом облаке) localhost ≠ твой компьютер */
+function vercelCrmHint(): string {
+  if (process.env.VERCEL) {
+    return (
+      "Деплой на Vercel: в Environment Variables задай CRM_API_URL и NEXT_PUBLIC_API_URL на публичный HTTPS URL твоего CRM (Railway, Render, Fly и т.д.). " +
+      "localhost и 127.0.0.1 с Vercel недоступны — это не твой ПК."
+    );
+  }
+  return (
+    "Локально: CRM (uvicorn) должен быть запущен, CRM_API_URL — на него (или host.docker.internal из Docker)."
+  );
+}
+
 /** Кэш JWT от /auth/login (сервер Next), чтобы не логиниться на каждый клик */
 let loginTokenCache: { token: string; at: number } | null = null;
 const LOGIN_CACHE_MS = 25 * 60 * 1000;
@@ -135,10 +157,12 @@ export async function DELETE(
           !token,
         attempts: failures,
         hint: !hasCreds
-          ? "Добавь в my-app/.env.local: CRM_ADMIN_EMAIL и CRM_ADMIN_PASSWORD (как ADMIN_EMAIL/ADMIN_PASSWORD в vrode_crm/.env), либо CRM_API_TOKEN. Перезапусти npm run dev."
+          ? process.env.VERCEL
+            ? "В Vercel → Settings → Environment Variables: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN."
+            : "В my-app/.env.local: CRM_ADMIN_EMAIL, CRM_ADMIN_PASSWORD или CRM_API_TOKEN. Перезапусти dev."
           : !token
-            ? "Логин в CRM не удалился (проверь email/пароль и что uvicorn запущен на CRM)."
-            : "Проверь, что в CRM есть DELETE /leads/{id} и лид с таким id существует.",
+            ? `Логин в CRM не удалился (email/пароль, доступность ${CRM}). ${vercelCrmHint()}`
+            : `Проверь DELETE /leads/{id} и существование лида. ${isLocalhostUrl(CRM) && process.env.VERCEL ? vercelCrmHint() : ""}`,
       },
       { status: 502 }
     );
@@ -149,8 +173,7 @@ export async function DELETE(
         error: "CRM недоступен с сервера Next",
         crm: CRM,
         detail: message,
-        hint:
-          "Убедись, что CRM запущен (uvicorn) и CRM_API_URL указывает на него. В Docker вместо localhost часто нужен host.docker.internal.",
+        hint: vercelCrmHint(),
       },
       { status: 503 }
     );
