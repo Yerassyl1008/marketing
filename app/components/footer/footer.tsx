@@ -33,12 +33,12 @@ export default function Footer() {
   const t = useTranslations("footer");
 
   return (
-    <footer className="mt-10 w-full rounded-t-[32px] bg-[var(--footer-bg-top)] px-3 pb-0 pt-3 md:px-8 md:pb-0 md:pt-8">
-      <div className="rounded-[28px]  px-4 py-6 md:px-12 md:py-10">
+    <footer className="mt-8 w-full rounded-t-[28px] bg-[var(--footer-bg-top)] px-3 pb-0 pt-3 md:px-6 md:pb-0 md:pt-6 lg:px-8">
+      <div className="rounded-[28px] px-4 py-5 md:px-8 md:py-8 lg:px-10">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-start gap-3 md:max-w-[620px]">
-            <span className="text-5xl text-zinc-300">“</span>
-            <p className="text-sm text-zinc-500 md:text-2xl md:leading-9">
+          <div className="flex items-start gap-3 md:max-w-[520px] lg:max-w-[580px]">
+            <span className="text-3xl leading-none text-zinc-300 md:text-4xl">“</span>
+            <p className="text-sm leading-relaxed text-zinc-500 md:text-base md:leading-relaxed lg:text-lg">
               <span className="font-semibold text-zinc-700">
                 {t("quoteBold")}
               </span>{" "}
@@ -75,10 +75,10 @@ export default function Footer() {
       </div>
 
       <div className="mt-4 -mx-3 bg-[#1d1d1f] text-zinc-200 md:-mx-8">
-        <div className="mx-auto max-w-[1900px] px-4 py-6 md:px-12 md:py-10">
+        <div className="mx-auto max-w-[1400px] px-4 py-6 md:px-8 md:py-8 lg:px-10">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[2.2fr_1fr_1fr_1fr] md:gap-10">
             <div>
-              <h3 className="mb-3 text-2xl font-semibold md:text-4xl">
+              <h3 className="mb-3 text-xl font-semibold md:text-2xl lg:text-3xl">
                 {t("brandTitle")}
               </h3>
               <p className="max-w-md text-sm leading-6 text-zinc-400 md:text-lg md:leading-8">

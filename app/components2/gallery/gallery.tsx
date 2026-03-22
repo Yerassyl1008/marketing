@@ -16,8 +16,8 @@ const images = [
 
 export default function Gallery() {
   return (
-    <section className="mt-10 rounded-[32px]  p-4 md:p-10">
-      <h2 className="mb-6 text-left text-4xl font-bold text-[var(--design-title)] md:mb-8 md:text-center md:text-5xl">
+    <section className="mt-8 rounded-[24px] p-4 md:rounded-[28px] md:p-8 lg:rounded-[32px] lg:p-10">
+      <h2 className="mb-5 text-left text-3xl font-bold text-[var(--design-title)] md:mb-6 md:text-center md:text-4xl">
         Lorem Ipsum
       </h2>
 

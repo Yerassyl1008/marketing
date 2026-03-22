@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function Confidentel() {
   return (
-    <section className="relative px-4 pb-16 pt-2 md:px-10 md:pb-20 md:pt-4 mt-6">
-      <div className="w-full md:max-w-[980px] pt-10">
+    <section className="relative mt-6 px-4 pb-12 pt-2 md:px-8 md:pb-16 md:pt-4 lg:px-10">
+      <div className="w-full pt-6 md:max-w-[980px] md:pt-8">
         <div className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
           <span>⌂</span>
           <span>›</span>
@@ -13,7 +13,7 @@ export default function Confidentel() {
           <span className="font-semibold text-zinc-700">SMM</span>
         </div>
 
-        <h1 className="mb-3 text-5xl font-extrabold leading-[108%] text-zinc-900 md:text-7xl">
+        <h1 className="mb-3 text-3xl font-extrabold leading-[1.15] text-zinc-900 sm:text-4xl md:text-5xl">
           <span className="inline-block rounded-full bg-[#f5d58d] px-4 py-1">
           Политика 
           </span>
@@ -34,7 +34,7 @@ export default function Confidentel() {
         </div>
       </div>
 
-        <div className="flex items-center gap-2 mt-24">
+        <div className="mt-12 flex items-center gap-2 md:mt-16">
           <Link href="#" aria-label="Instagram">
             <Image src="/svg/Instagram_black.svg" alt="Instagram" width={26} height={26} />
           </Link>

@@ -15,8 +15,8 @@ export default function Projects() {
   };
 
   return (
-    <section className="mt-10 px-4 py-8 lg:px-8 lg:py-10">
-      <h2 className="text-4xl font-bold text-zinc-800 lg:text-5xl">{t("title")}</h2>
+    <section className="mt-8 px-4 py-6 lg:px-8 lg:py-8">
+      <h2 className="text-3xl font-bold text-zinc-800 lg:text-4xl">{t("title")}</h2>
       <div className="mb-6 flex items-center justify-center lg:mb-8 lg:justify-end">
         <button
           type="button"
@@ -47,7 +47,7 @@ export default function Projects() {
               </div>
 
               <div className="p-4 lg:p-5">
-                <h3 className="mb-2 text-3xl font-bold text-[var(--foreground)] lg:text-4xl">
+                <h3 className="mb-2 text-xl font-bold text-[var(--foreground)] lg:text-2xl">
                   {project.title}
                 </h3>
                 <p className="mb-4 text-lg text-zinc-500 lg:mb-5 font-medium leading-9 ">

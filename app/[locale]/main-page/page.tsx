@@ -13,8 +13,8 @@ export default function MainPage() {
     <>  
     
     
-    <div className="mx-auto flex w-full max-w-[1900px] flex-col gap-10 px-2 sm:px-4 lg:px-6">
-      <section className="mt-4 rounded-[28px] bg-[var(--team-surface)] px-2 pb-8 pt-2 shadow-sm sm:mt-6 sm:px-3 md:px-6 md:pb-10 md:pt-4 lg:rounded-[36px]">
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-3 sm:gap-8 sm:px-4 md:px-6 lg:max-w-[1400px]">
+      <section className="mt-4 rounded-[24px] bg-[var(--team-surface)] px-2 pb-6 pt-2 shadow-sm sm:mt-6 sm:px-3 md:rounded-[28px] md:px-5 md:pb-8 md:pt-3 lg:rounded-[32px] lg:px-6 lg:pb-10 lg:pt-2">
         <Header />
         <Hero />
       </section>

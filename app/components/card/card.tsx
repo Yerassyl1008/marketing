@@ -18,7 +18,12 @@ const tagIds = [
   "andMore",
 ] as const;
 
-export default function Card() {
+type CardProps = {
+  /** Внутри уже окрашенной секции (connect): без второго слоя team-surface и тени */
+  embedded?: boolean;
+};
+
+export default function Card({ embedded = false }: CardProps) {
   const t = useTranslations("cardSection");
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [name, setName] = useState("");
@@ -86,11 +91,23 @@ export default function Card() {
   };
 
   return (
-    <section className="mt-10 rounded-[32px] bg-[var(--team-surface)] p-3 shadow-sm sm:p-6 lg:p-10 lg:py-30">
-      <div className="mx-auto max-w-6xl rounded-[28px] bg-[var(--team-surface)] p-3 sm:p-4 lg:p-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8 bg-[var(--team-surface)]">
+    <section
+      className={
+        embedded
+          ? "mt-4 w-full sm:mt-6"
+          : "mt-8 rounded-[28px] bg-[var(--team-surface)] p-3 shadow-sm sm:p-5 lg:p-8 lg:py-12"
+      }
+    >
+      <div
+        className={
+          embedded
+            ? "mx-auto max-w-6xl"
+            : "mx-auto max-w-6xl rounded-[28px] p-3 sm:p-4 lg:p-6"
+        }
+      >
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <div className="hidden border-r border-dashed border-zinc-300 pr-6 lg:block">
-            <h3 className="mb-3 text-5xl font-bold leading-tight text-[var(--foreground)]">
+            <h3 className="mb-3 text-3xl font-bold leading-tight text-[var(--foreground)] sm:text-4xl">
               <span className="rounded-full bg-[var(--hero-span)]">
                 {t("left.titleTop")}
               </span >
@@ -130,7 +147,7 @@ export default function Card() {
           </div>
 
           <form className="rounded-3xl p-1 lg:p-0" onSubmit={handleSubmit}>
-            <h3 className="mb-4 text-4xl leading-tight font-bold text-[var(--foreground)] sm:mb-5 sm:text-5xl">
+            <h3 className="mb-4 text-2xl leading-tight font-bold text-[var(--foreground)] sm:mb-5 sm:text-3xl">
               {t("form.title")}
             </h3>
 

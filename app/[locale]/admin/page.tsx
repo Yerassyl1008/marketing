@@ -72,7 +72,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-[1900px] bg-[var(--background)]">
+    <div className="mx-auto min-h-screen w-full max-w-[1400px] bg-[var(--background)]">
       <Sidebar
         isMobileOpen={isMobileOpen}
         closeMobile={() => setIsMobileOpen(false)}

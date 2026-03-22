@@ -26,7 +26,12 @@ function localeShortLabel(code: string) {
   return map[code] ?? code.toUpperCase();
 }
 
-export default function Header() {
+type HeaderProps = {
+  /** Фон как у секции team-surface (connect). Не подменяем --header-bg на родителе — так ломается тёмная тема. */
+  matchTeamSurface?: boolean;
+};
+
+export default function Header({ matchTeamSurface = false }: HeaderProps) {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -130,7 +135,7 @@ export default function Header() {
                 aria-expanded={isLanguageOpen}
                 aria-haspopup="listbox"
                 onClick={() => setIsLanguageOpen((prev) => !prev)}
-                className="flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm transition hover:opacity-90"
+                className="flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm text-[var(--foreground)] transition hover:opacity-90"
               >
                 <span>{localeShortLabel(localeBase)}</span>
                 <Image
@@ -138,13 +143,15 @@ export default function Header() {
                   alt=""
                   width={9}
                   height={9}
-                  className={`transition-transform  items-center duration-200 ${isLanguageOpen ? "rotate-180" : ""}`}
+                  className={`transition-transform  items-center duration-200 dark:invert ${isLanguageOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
               {isLanguageOpen && (
                 <div
-                  className="absolute left-1/2 top-full z-30 mt-1.5 min-w-[5.5rem] -translate-x-1/2 rounded-2xl border border-[color:var(--foreground)]/12 bg-[var(--header-bg)] p-1.5 shadow-sm dark:border-white/12"
+                  className={`absolute left-1/2 top-full z-30 mt-1.5 min-w-[5.5rem] -translate-x-1/2 rounded-2xl border border-[color:var(--foreground)]/12 p-1.5 shadow-sm dark:border-white/12 ${
+                    matchTeamSurface ? "bg-[var(--team-surface)]" : "bg-[var(--header-bg)]"
+                  }`}
                   role="listbox"
                   aria-label="Язык интерфейса"
                 >
@@ -211,7 +218,7 @@ export default function Header() {
           </button>
 
           <nav>
-            <ul className="space-y-5 text-4xl text-zinc-800">
+            <ul className="space-y-4 text-3xl text-zinc-800 dark:text-zinc-200">
               {navLinks.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>

@@ -8,7 +8,7 @@ export default function Sales() {
   const t = useTranslations("sales");
 
   return (
-    <section className="relative pb-16 pt-6 md:pb-20 md:pt-10">
+    <section className="relative pb-12 pt-6 md:pb-16 md:pt-8">
       <div className="flex flex-col-reverse gap-8 md:flex-row md:items-center">
         <div className="flex w-full justify-center md:w-1/2 md:flex-shrink-0">
           <Image
@@ -50,7 +50,7 @@ export default function Sales() {
             {t("description")}
           </p>
 
-          <p className="text-xl text-zinc-600 md:text-2xl">
+          <p className="text-lg text-zinc-600 md:text-xl">
             {t("priceLabel")}{" "}
             <span className="font-bold text-[var(--design-text)]">
               {t("priceValue")}

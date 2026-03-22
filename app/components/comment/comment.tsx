@@ -4,7 +4,7 @@ export default function Comment() {
   const t = useTranslations("commentSection");
 
   return (
-    <section className="mt-10 px-2 py-8 lg:px-8 lg:py-10">
+    <section className="mt-8 px-2 py-6 lg:px-6 lg:py-8">
       <div className="relative">
         <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:overflow-visible">
           {["first", "second"].map((itemKey) => (
@@ -19,27 +19,27 @@ export default function Comment() {
               <div className="mb-4 flex items-center gap-3">
                 <div className="h-16 w-16 rounded-full bg-zinc-300" />
                 <div>
-                  <p className="text-2xl font-semibold text-[var(--foreground)] lg:text-lg">
+                  <p className="text-lg font-semibold text-[var(--foreground)] lg:text-base">
                     {t(`items.${itemKey}.name`)}
                   </p>
-                  <p className="text-xl text-[var(--foreground)] lg:text-base">
+                  <p className="text-base text-[var(--foreground)] lg:text-sm">
                     {t(`items.${itemKey}.subtitle`)}
                   </p>
                 </div>
               </div>
 
-              <h3 className="mb-2 text-3xl font-bold text-[var(--foreground)] lg:text-4xl">
+              <h3 className="mb-2 text-xl font-bold text-[var(--foreground)] lg:text-2xl">
                 {t(`items.${itemKey}.title`)}
               </h3>
-              <p className="text-2xl font-medium text-Light leading-9 text-[var(--foreground)] lg:text-[33px] lg:leading-13">
+              <p className="text-base font-medium leading-relaxed text-[var(--foreground)] lg:text-lg lg:leading-relaxed">
                 {t(`items.${itemKey}.body`)}
               </p>
 
               <div className="mt-4 flex items-center gap-2">
-                <span className="text-5xl font-bold text-[var(--foreground)] lg:text-4xl">
+                <span className="text-3xl font-bold text-[var(--foreground)] lg:text-4xl">
                   {t(`items.${itemKey}.rating`)}
                 </span>
-                <span className="text-4xl text-[#f2d48c] lg:text-3xl">★ ★ ★ ★ ★</span>
+                <span className="text-2xl text-[#f2d48c] lg:text-3xl">★ ★ ★ ★ ★</span>
               </div>
             </article>
           ))}

@@ -58,8 +58,8 @@ export default function Services() {
   const [openedSection, setOpenedSection] = useState<string>("popular");
 
   return (
-    <section className="mt-8  px-3 py-8 md:px-8 md:py-10">
-      <h2 className="mb-10 text-center text-3xl font-bold text-[var(--services-title)] md:mb-16 md:text-4xl">
+    <section className="mt-6 px-3 py-6 md:px-6 md:py-8 lg:px-8">
+      <h2 className="mb-8 text-center text-2xl font-bold text-[var(--services-title)] md:mb-10 md:text-3xl">
         {t("title")}
       </h2>
 
@@ -96,14 +96,19 @@ export default function Services() {
                   return (
                     <div
                       key={`${section.id}-${itemId}`}
-                      className={`flex min-h-[112px] items-start gap-2 rounded-2xl px-3 py-4 md:min-h-16 md:items-center md:rounded-full ${
+                      className={`flex min-h-[112px] min-w-0 flex-col items-start gap-2 rounded-2xl px-3 py-4 md:min-h-16 md:flex-row md:items-center md:gap-2 md:rounded-full ${
                         isActive
                           ? "bg-[#9ab5f6] text-[var(--services-title)]"
                           : "bg-[var(--services-text-bg)]  text-[var(--services-title)]"
                       }`}
                     >
-                      <span className="mt-1 h-3 w-3 flex-shrink-0 rounded-full border border-zinc-400 md:mt-0" />
-                      <span className="text-xs leading-5 md:text-sm">{t(`sections.${section.id}.items.${itemId}`)}</span>
+                      <span
+                        className="h-3 w-3 flex-shrink-0 rounded-full border border-zinc-400"
+                        aria-hidden
+                      />
+                      <span className="min-w-0 w-full text-xs leading-5 md:text-sm">
+                        {t(`sections.${section.id}.items.${itemId}`)}
+                      </span>
                     </div>
                   );
                 })}

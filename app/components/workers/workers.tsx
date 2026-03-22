@@ -65,13 +65,13 @@ export default function Workers() {
   const hasMoreMobileWorkers = mobileVisibleCount < workers.length;
 
   return (
-    <section className="mt-8 px-3 py-8 md:px-8 md:py-10">
-      <h2 className="mb-8 text-center text-4xl font-extrabold text-[var(--workers-title)] md:mb-12 md:text-5xl">
+    <section className="mt-6 px-3 py-6 md:px-6 md:py-8 lg:px-8">
+      <h2 className="mb-6 text-center text-3xl font-extrabold text-[var(--workers-title)] md:mb-8 md:text-4xl">
         {t("title")}
       </h2>
 
       <div className="relative hidden lg:block">
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
           {desktopWorkers.map((worker) => (
             <article
               key={worker.name}

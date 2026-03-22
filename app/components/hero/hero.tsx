@@ -22,7 +22,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pb-10 pt-4 sm:pb-16 sm:pt-6 lg:pb-20 lg:pt-10">
+    <section className="relative pb-8 pt-4 sm:pb-12 sm:pt-6 lg:pb-14 lg:pt-8">
       <div className="flex flex-col-reverse gap-4 sm:gap-6 lg:flex-row lg:items-center">
         <div className="flex w-full justify-center lg:w-1/2 lg:flex-shrink-0">
           <Image
@@ -38,8 +38,8 @@ export default function Hero() {
           />
         </div>
 
-        <div className="w-full min-w-0 lg:w-1/2 lg:max-w-[800px]">
-          <h2 className="mb-2 text-[32px] font-extrabold leading-[1.1] sm:mb-3 sm:text-4xl sm:leading-[120%] lg:text-5xl">
+        <div className="w-full min-w-0 lg:w-1/2 lg:max-w-[36rem]">
+          <h2 className="mb-2 text-[26px] font-extrabold leading-[1.15] sm:mb-3 sm:text-3xl sm:leading-tight lg:text-4xl">
             {t("title")}{" "}
             <span className="inline-block rounded-full bg-[var(--hero-span)] px-2 py-0.5 sm:py-0 lg:px-4">
               {t("span")}

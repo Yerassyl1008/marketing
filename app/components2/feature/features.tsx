@@ -23,7 +23,7 @@ export default function Features() {
   }, []);
 
   return (
-    <section className="mt-10 p-4 [--card-radius:1.5rem] [--card-pad:1rem] [--title-size:2rem] [--title-lh:2.4rem] [--text-size:1.25rem] [--text-lh:2rem] [--icon-size:1.75rem] md:p-6 md:[--card-pad:1.25rem] md:[--title-size:1.75rem] md:[--title-lh:2.25rem] md:[--text-size:1rem] md:[--text-lh:1.75rem] md:[--icon-size:2rem]">
+    <section className="mt-8 p-4 [--card-radius:1.25rem] [--card-pad:1rem] [--title-size:1.5rem] [--title-lh:2rem] [--text-size:1.0625rem] [--text-lh:1.65rem] [--icon-size:1.5rem] md:p-6 md:[--card-pad:1.125rem] md:[--title-size:1.375rem] md:[--title-lh:1.85rem] md:[--text-size:0.9375rem] md:[--text-lh:1.55rem] md:[--icon-size:1.75rem]">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
         {FEATURE_ITEM_IDS.map((id) => (
           <article
@@ -44,10 +44,10 @@ export default function Features() {
               />
             </div>
 
-            <h3 className=" text-[var(--design-title)] font-bold leading-[var(--title-lh)] text-2xl font-['Manrope']">
+            <h3 className="font-['Manrope'] text-[length:var(--title-size)] font-bold leading-[var(--title-lh)] text-[var(--design-title)]">
               {t(`items.${id}.title`)}
             </h3>
-            <p className="text-[var(--design-title)] leading-[var(--text-lh)] ">
+            <p className="text-[length:var(--text-size)] leading-[var(--text-lh)] text-[var(--design-title)]">
               {t(`items.${id}.description`)}
             </p>
           </article>

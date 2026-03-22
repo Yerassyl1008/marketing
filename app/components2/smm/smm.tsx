@@ -8,7 +8,7 @@ export default function Smm() {
   const t = useTranslations("smm");
 
   return (
-    <section className="relative px-3 pb-16 pt-6 sm:px-4 md:px-0 md:pb-20 md:pt-10 md:pl-10">
+    <section className="relative px-3 pb-12 pt-6 sm:px-4 md:px-0 md:pb-16 md:pt-8 md:pl-8 lg:pl-10">
       <div className="w-full md:max-w-[880px]">
         <div className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
           <span aria-hidden>⌂</span>
@@ -18,8 +18,9 @@ export default function Smm() {
           <span className="font-semibold text-zinc-700">{t("breadcrumbCurrent")}</span>
         </div>
 
-        <h1 className="mb-3 text-[1.8rem] font-extrabold leading-[108%] text-[var(--foreground)] sm:text-[2.8rem] md:text-5xl">
-          <span className="inline-block whitespace-nowrap rounded-full bg-[var(--hero-span)] px-4 py-1">
+        <h1 className="mb-3 text-2xl font-extrabold leading-[1.15] text-[var(--foreground)] sm:text-4xl md:text-5xl">
+          {/* -ml совпадает с pl: фон уходит влево, текст обеих строк начинается на одной оси; на xs -ml-3 под px-3 секции */}
+          <span className="inline-block whitespace-nowrap rounded-full bg-[var(--hero-span)] py-1 pl-3 pr-4 -ml-3 sm:pl-4 sm:pr-4 sm:-ml-4">
             {t("titleHighlight")}
           </span>{" "}
           {t("titleRest")}

@@ -151,8 +151,8 @@ export default function Work() {
   const tangentRotateDeg = (angleDeg: number) => angleDeg - 90;
 
   return (
-    <section className="mt-10 rounded-[32px] px-2 py-8 shadow-sm md:px-8 md:py-12">
-      <h2 className="mb-8 text-center text-4xl font-bold text-zinc-800 md:mb-10 md:text-5xl">
+    <section className="mt-8 rounded-[28px] px-2 py-6 shadow-sm md:px-6 md:py-10 lg:px-8">
+      <h2 className="mb-6 text-center text-3xl font-bold text-zinc-800 md:mb-8 md:text-4xl">
         {t("title")}
       </h2>
 

@@ -15,7 +15,7 @@ const bodyText =
 export default function PrivacyContent() {
   return (
     <section className="mt-6 p-4 md:p-8">
-      <h1 className="mb-8 text-center text-4xl font-bold text-zinc-800 md:text-5xl">
+      <h1 className="mb-8 text-center text-3xl font-bold text-zinc-800 md:text-4xl">
         Lorem Ipsum
       </h1>
 

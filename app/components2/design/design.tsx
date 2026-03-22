@@ -8,15 +8,15 @@ export default function Design() {
   const t = useTranslations("design");
 
   return (
-    <section className="relative pb-16 pt-6 md:pb-20 md:mx-10">
-      <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-10">
+    <section className="relative pb-12 pt-6 md:pb-16 md:mx-6 lg:mx-10">
+      <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-8">
         <div className="flex w-full justify-start md:w-[40%] md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1 (2) 1.png"
             alt={t("imageAlt")}
             width={600}
             height={600}
-            className="h-auto w-full max-w-[400px] md:max-w-[600px]"
+            className="h-auto w-full max-w-[360px] md:max-w-[500px]"
           />
         </div>
 
@@ -31,7 +31,7 @@ export default function Design() {
             </span>
           </div>
 
-          <h2 className="mb-3 text-5xl font-extrabold leading-[105%] text-[var(--design-title)] md:text-6xl">
+          <h2 className="mb-3 text-3xl font-extrabold leading-[1.15] text-[var(--design-title)] sm:text-4xl lg:text-5xl">
             <span className="inline-block rounded-full bg-[var(--design-accent)] px-4 py-1">
               {t("titleHighlight")}
             </span>

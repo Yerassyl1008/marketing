@@ -7,8 +7,8 @@ import Faq from "../../components2/faq/faq";
 export default function ServicesPage() {
   return (
     <>  
-    <main className="mx-auto flex w-full max-w-[1900px] flex-col gap-16 px-6">
-    <section className="rounded-[36px] mt-6 bg-[var(--team-surface)] px-3 pb-8 pt-2 shadow-sm md:px-6 md:pb-10 md:pt-4">
+    <main className="mx-auto flex w-full max-w-[1280px] flex-col gap-8 px-3 sm:gap-10 sm:px-4 md:px-6 lg:max-w-[1400px]">
+    <section className="mt-6 rounded-[24px] bg-[var(--team-surface)] px-2 pb-8 pt-2 shadow-sm sm:px-3 md:rounded-[28px] md:px-5 md:pb-10 md:pt-2 lg:rounded-[32px] lg:px-6">
       <Header />
       <Smm />
     </section>

@@ -10,8 +10,8 @@ export default function Faq() {
   const [openedIndex, setOpenedIndex] = useState(0);
 
   return (
-    <section className="mt-10 p-2 md:p-6">
-      <h2 className="mb-6 text-center text-5xl font-bold text-(var(--foreground)) md:mb-10 md:text-6xl">
+    <section className="mt-8 p-2 md:p-6">
+      <h2 className="mb-6 text-center text-3xl font-bold text-(var(--foreground)) md:mb-8 md:text-4xl">
         {t("title")}
       </h2>
 
@@ -27,7 +27,7 @@ export default function Faq() {
               <button
                 type="button"
                 onClick={() => setOpenedIndex((prev) => (prev === index ? -1 : index))}
-                className="flex w-full items-center gap-3 py-4 text-left md:py-8"
+                className="flex w-full items-center gap-3 py-3 text-left md:py-6"
                 aria-expanded={isOpen}
               >
                 <span className="w-4 text-xl text-(var(--foreground))" aria-hidden>
@@ -44,7 +44,7 @@ export default function Faq() {
                 }`}
               >
                 <div className="overflow-hidden pl-7 pr-1">
-                  <p className="max-w-[1200px] text-base font-medium leading-7 text-(var(--foreground)) md:text-lg md:leading-8">
+                  <p className="max-w-3xl text-base font-medium leading-7 text-(var(--foreground)) md:text-lg md:leading-8">
                     {t(`items.${id}.answer`)}
                   </p>
                 </div>
