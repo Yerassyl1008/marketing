@@ -8,7 +8,7 @@ export default function Smm() {
   const t = useTranslations("smm");
 
   return (
-    <section className="relative px-3 pb-12 pt-6 sm:px-4 md:px-0 md:pb-16 md:pt-8 md:pl-8 lg:pl-10">
+    <section className="relative pb-12 pt-6 md:pb-16 md:pt-8">
       <div className="w-full md:max-w-[880px]">
         <div className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
           <span aria-hidden>⌂</span>
@@ -44,7 +44,7 @@ export default function Smm() {
         </Link>
       </div>
 
-      <div className="mt-12 flex justify-start md:absolute md:bottom-4 md:left-0 md:mt-0 md:pl-10">
+      <div className="mt-12 flex justify-start md:absolute md:bottom-4 md:left-0 md:mt-0">
         <div className="flex items-center gap-2">
           <Link href="#" aria-label={t("socialInstagram")}>
             <Image

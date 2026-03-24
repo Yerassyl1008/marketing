@@ -22,8 +22,8 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pb-8 pt-4 sm:pb-12 sm:pt-6 lg:pb-14 lg:pt-8">
-      <div className="flex flex-col-reverse gap-4 sm:gap-6 lg:flex-row lg:items-center">
+    <section className="relative min-w-0 max-w-full pb-8 sm:pb-12 sm:pt-6 lg:pb-14">
+      <div className="mx-auto flex min-w-0 max-w-full flex-col-reverse gap-4 sm:gap-6 lg:flex-row lg:items-center">
         <div className="flex w-full justify-center lg:w-1/2 lg:flex-shrink-0">
           <Image
             src={
@@ -45,7 +45,7 @@ export default function Hero() {
               {t("span")}
             </span>
           </h2>
-          <p className="mb-3 text-sm leading-snug text-zinc-700 sm:mb-4 sm:text-base">{t("text")}</p>
+          <p className="mb-3 text-sm leading-snug text-[var(--design-text)] sm:mb-4 sm:text-base">{t("text")}</p>
           <button className="flex w-full items-center justify-center gap-2 rounded-full bg-[#acc2fd] px-4 py-2.5 text-base text-[var(--hero-button)] hover:bg-[#9fb8fc] sm:w-auto sm:px-5 sm:py-3 sm:text-lg lg:px-4 lg:text-base">
             <Image
               src="/svg/solar_calculator-broken.svg"
@@ -63,8 +63,7 @@ export default function Hero() {
           <Link
             href="#"
             aria-label="Instagram"
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src={
@@ -80,8 +79,7 @@ export default function Hero() {
           <Link
             href="#"
             aria-label="Telegram"
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src={
@@ -97,8 +95,7 @@ export default function Hero() {
           <Link
             href="#"
             aria-label="Viber"
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src={

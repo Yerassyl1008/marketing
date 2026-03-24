@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Confidentel() {
   return (
-    <section className="relative mt-6 px-4 pb-12 pt-2 md:px-8 md:pb-16 md:pt-4 lg:px-10">
+    <section className="relative mt-6 pb-12 pt-2 md:pb-16 md:pt-4">
       <div className="w-full pt-6 md:max-w-[980px] md:pt-8">
         <div className="mb-4 flex items-center gap-2 text-sm text-zinc-500">
           <span>⌂</span>

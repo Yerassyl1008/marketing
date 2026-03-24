@@ -9,13 +9,13 @@ export default function Sales() {
 
   return (
     <section className="relative pb-12 pt-6 md:pb-16 md:pt-8">
-      <div className="flex flex-col-reverse gap-8 md:flex-row md:items-center">
+      <div className="flex flex-col-reverse gap-12 md:flex-row md:items-center">
         <div className="flex w-full justify-center md:w-1/2 md:flex-shrink-0">
           <Image
             src="/img/beautifull-caucasian-woman-with-curly-hair-smiles-isolated 1.png"
             alt={t("imageAlt")}
             width={500}
-            height={660}
+            height={600}
             className="h-auto w-full rounded-3xl shadow-sm md:max-w-[660px]"
           />
         </div>
@@ -37,8 +37,8 @@ export default function Sales() {
             </span>
           </div>
 
-          <h1 className="mb-3 text-5xl font-extrabold leading-[108%] md:text-5xl text-[var(--design-title)]">
-            <span className="inline-block rounded-full bg-[#f5d58d] px-4 py-1">
+          <h1 className="mb-3 text-3xl font-extrabold leading-[1.15] text-[var(--foreground)] sm:text-4xl md:text-4xl">
+            <span className="inline-block whitespace-nowrap rounded-full bg-[var(--hero-span)] py-1 pl-3 pr-4 text-[var(--design-title)] -ml-3 sm:pl-4 sm:pr-4 sm:-ml-4">
               {t("titleHighlight")}
             </span>{" "}
             {t("titleMetric")}
@@ -50,7 +50,7 @@ export default function Sales() {
             {t("description")}
           </p>
 
-          <p className="text-lg text-zinc-600 md:text-xl">
+          <p className="text-lg text-[var(--design-muted)] md:text-xl">
             {t("priceLabel")}{" "}
             <span className="font-bold text-[var(--design-text)]">
               {t("priceValue")}
@@ -59,7 +59,7 @@ export default function Sales() {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end md:absolute md:bottom-4 md:right-2 md:mt-0">
+      <div className="mt-6 flex justify-end md:absolute md:bottom-4 md:right-0 md:mt-0">
         <div className="flex items-center gap-2">
           <Link href="#" aria-label={t("socialInstagram")}>
             <Image
@@ -67,6 +67,7 @@ export default function Sales() {
               alt=""
               width={26}
               height={26}
+            
             />
           </Link>
           <Link href="#" aria-label={t("socialTelegram")}>
@@ -75,6 +76,7 @@ export default function Sales() {
               alt=""
               width={26}
               height={26}
+         
             />
           </Link>
           <Link href="#" aria-label={t("socialViber")}>
@@ -83,6 +85,7 @@ export default function Sales() {
               alt=""
               width={26}
               height={26}
+           
             />
           </Link>
         </div>

@@ -8,7 +8,7 @@ export default function Design() {
   const t = useTranslations("design");
 
   return (
-    <section className="relative pb-12 pt-6 md:pb-16 md:mx-6 lg:mx-10">
+    <section className="relative pb-12 pt-6 md:pb-16">
       <div className="flex flex-col-reverse gap-4 md:flex-row md:items-center md:gap-8">
         <div className="flex w-full justify-start md:w-[40%] md:flex-shrink-0">
           <Image
@@ -21,18 +21,18 @@ export default function Design() {
         </div>
 
         <div className="w-full min-w-0 md:w-[46%] md:max-w-[800px]">
-          <div className="mb-4 flex items-center gap-2 text-sm text-[var(--design-muted)]">
+          <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-[var(--design-muted)]">
             <span aria-hidden>⌂</span>
             <span aria-hidden>›</span>
             <span>{t("breadcrumbTeam")}</span>
             <span aria-hidden>›</span>
-            <span className="font-semibold text-[var(--design-text)]">
+            <span className="font-semibold text-[var(--foreground)]">
               {t("breadcrumbName")}
             </span>
           </div>
 
-          <h2 className="mb-3 text-3xl font-extrabold leading-[1.15] text-[var(--design-title)] sm:text-4xl lg:text-5xl">
-            <span className="inline-block rounded-full bg-[var(--design-accent)] px-4 py-1">
+          <h2 className="mb-3 text-3xl font-extrabold leading-[1.15] text-[var(--foreground)] sm:text-4xl lg:text-5xl">
+            <span className="inline-block whitespace-nowrap rounded-full bg-[var(--hero-span)] py-1 pl-3 pr-4 text-[var(--design-title)] -ml-3 sm:pl-4 sm:pr-4 sm:-ml-4">
               {t("titleHighlight")}
             </span>
             <br />
@@ -45,58 +45,59 @@ export default function Design() {
 
           <Link
             href="/connect"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--design-btn)] px-6 py-3 text-base transition-colors duration-300 hover:bg-[var(--design-btn-hover)]"
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--design-btn)] px-6 py-3 text-base text-zinc-900 transition-colors duration-300 hover:bg-[var(--design-btn-hover)] dark:text-zinc-100"
           >
             <Image
               src="/svg/solar_calculator-broken.svg"
               alt={t("calculatorAlt")}
               width={20}
               height={20}
+              className="dark:invert"
             />
             {t("contactButton")}
           </Link>
         </div>
       </div>
 
-      <div className="mt-4 flex justify-end md:absolute md:bottom-4 md:right-8 md:mt-0">
+      <div className="mt-4 flex justify-end md:absolute md:bottom-4 md:right-0 md:mt-0">
         <div className="flex items-center gap-2">
           <Link
             href="#"
             aria-label={t("socialInstagram")}
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src="/svg/Instagram_black.svg"
               alt=""
               width={30}
               height={30}
+              className="dark:invert"
             />
           </Link>
           <Link
             href="#"
             aria-label={t("socialTelegram")}
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src="/svg/Telegram_black.svg"
               alt=""
               width={30}
               height={30}
+              className="dark:invert"
             />
           </Link>
           <Link
             href="#"
             aria-label={t("socialViber")}
-            className="grid place-items-center rounded-full  text-[10px] text-white 
-          "
+            className="grid place-items-center rounded-full text-[10px] text-white"
           >
             <Image
               src="/svg/Viber_black.svg"
               alt=""
               width={30}
               height={30}
+              className="dark:invert"
             />
           </Link>
         </div>
